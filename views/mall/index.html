@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body>
+    <script type="text/javascript">
+        location.href = "home.html";
+        /*
+        function getUrlParam(name){
+            //构造一个含有目标参数的正则表达式对象
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            //匹配目标参数
+            var r = window.location.search.substr(1).match(reg);
+            //返回参数值
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+        //微信授权
+        +function init(){
+            var mobile = getUrlParam("mobile");
+            if(mobile && mobile !== "null" && mobile !== "undefined"){
+                sessionStorage.setItem("referrer_mobile",mobile);
+            }
+            var redirect_url = "http://weixin.xiaobaicar.com/h5_masterclient/auth.html";
+            location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx0654571e2c32b878&redirect_uri="+redirect_url+"&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        }();
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body>
+<script type="text/javascript" src="js/zepto.js"></script>
+<script type="text/javascript" src="js/plupload.full.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/redirect.js"></script>
+<script type="text/javascript">
+    var DATA = {
+        code:Common.getUrlParam("code")
+    };
+    /**
+     * ajax请求返回eror统一调用规则
+     * error code  110需要重新登录
+     */
+    function ajaxErrorHandle(res){
+        if(res.code == "s_ok"){
+            return ;
+        }
+
+        if(res.error_code == 110 || res.error_code == 130){  //重新登录
+            urlRedirect("login.html");
+        }else if(res.error_code == 120){
+            urlRedirect("index.html");
+        }else{
+            Common.lhpShortMessage({msg:res.msg,top:"45%"});
+        }
+    }
+    //授权
+    function authorization(){
+        $.ajax({
+            type:"post",
+            dataType:"json",
+            data:{
+                "code":DATA.code
+            },
+            url:domain+"/v1/user/wxlogin",
+            success:function(res){
+                if(res.code == "s_ok"){
+                    var r = res.result;
+                    if(r.type == 1){  //未绑定，需要进行注册登录
+                        urlRedirect("login.html");
+                    }else if(r.type == 2){ //已绑定，未进行认证，需要进行认证
+                        urlRedirect("login.html#page-auth-uncommitted");
+                    }else if(r.type == 3){  //已绑定，并且认证，直接登录成功
+                        urlRedirect("home.html");
+                    }else if(r.type == 4){  //正在审核
+                        Common.sendPoint('WXSF_35-1');
+                        urlRedirect("login.html#page-auth-committed");
+                    }else if(r.type == 5){
+                        urlRedirect("login.html#page-auth-committedfail");
+                    }
+                }else{
+                    ajaxErrorHandle(res);
+                }
+            },
+            error:function(res){
+                Common.lhpShortMessage({msg:"网络异常",top:"45%"});
+            }
+        });
+    }
+    //init
+    $(authorization);
+</script>
+</body>
+</html>
