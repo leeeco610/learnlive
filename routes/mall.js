@@ -10,8 +10,18 @@ router.get('/',function(req,res){
 });
 
 router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
+    var paramArr = req.url.split('?');
     if(paramArr.length > 1 && paramArr[1]){
         try{
+            var key = paramArr[1].split('=')[0];
+            var val = paramArr[1].split('=')[1];
+            if(key === 'JHome-TOKEN'){
+                res.setHeader('Set-Cookie',[key+'='+val+';path=/;']);
+            }
+        }catch(e){
+            //console.log(e);
+        }
+    }
     res.render('mall'+req.url.split(".")[0]);
 });
 
