@@ -10,6 +10,8 @@ router.get('/',function(req,res){
 });
 
 router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
+    if(paramArr.length > 1 && paramArr[1]){
+        try{
     res.render('mall'+req.url.split(".")[0]);
 });
 

@@ -55,23 +55,24 @@
             var strsec = getsec(time);
             var exp = new Date();
             exp.setTime(exp.getTime() + strsec*1);
-            document.cookie = name + "="+ escape (value) + ";domain="+domain+";expires=" + exp.toGMTString();
+            document.cookie = name + "="+ escape (value) + ";domain="+domain+"path=/;expires=" + exp.toGMTString();
         };
         var getDomain = function () {
-            var url = window.location.origin.split('.');
-            if(url.length > 2){
-                return url[url.length-2]+'.'+url[url.length-1].replace('/','').split(':')[0];
-            }else{
-                return url[1] ? url[0].replace('http://','')+'.'+url[1].split(':')[0]:url[0].replace('http://','').split(':')[0];
-            }
+            var url = window.location.origin;
+            return url.replace('http://','');
         };
         (function () {
             var val = getUrlParam(CONFIG.cookieKey);
-            var currentCookie = getCookie(CONFIG.cookieKey)
+            var currentCookie = getCookie(CONFIG.cookieKey);
             if(!currentCookie && val){
                 setCookie(CONFIG.cookieKey,val,'d7',getDomain());
             }
         })();
+
+        window.onload = function(){
+            var bd = document.documentElement || document.body;
+            bd.innerHTML = "当前所有Cookie => "+document.cookie;
+        }
     </script>
 </body>
 </html>
