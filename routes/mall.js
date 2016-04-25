@@ -9,7 +9,8 @@ router.get('/',function(req,res){
     res.render('mall/index.html');
 });
 
-router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
+
+router.get('/cookie.html',function(req,res){
     var paramArr = req.url.split('?');
     if(paramArr.length > 1 && paramArr[1]){
         try{
@@ -22,6 +23,10 @@ router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
             //console.log(e);
         }
     }
+    res.render('mall/cookie.html');
+});
+
+router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
     res.render('mall'+req.url.split(".")[0]);
 });
 

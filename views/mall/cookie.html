@@ -71,7 +71,7 @@
 
         window.onload = function(){
             var bd = document.documentElement || document.body;
-            bd.innerHTML = "当前所有Cookie => "+document.cookie;
+            bd.innerHTML = document.cookie.split(';').join('<br>');
         }
     </script>
 </body>
