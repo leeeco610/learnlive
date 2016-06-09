@@ -15,5 +15,9 @@ router.get('/login.html',function(req,res,next){
   res.render('login');
 });
 
+//tools page
+router.get('/tools.html',function(req,res,next){
+  res.render('tools');
+});
 
 module.exports = router;

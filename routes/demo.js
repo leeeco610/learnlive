@@ -10,8 +10,8 @@ router.get('/',function(req,res){
 });
 
 
-router.get(/^(\/)[\w|\W]+(.html)$/,function(req,res){
-    res.render('mall'+req.url.split(".")[0]);
+router.get('/upload',function(req,res){
+    console.log(req.params);
 });
 
 module.exports = router;

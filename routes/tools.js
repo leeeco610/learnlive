@@ -1,12 +1,8 @@
 /**
  * Created by lihaipeng on 15-10-23.
  */
-var crypto = require('crypto');
+var express = require('express');
+var router = express.Router();
 
 
-/**
- * 用户登录密码加密
- */
-exports.passwordEncryption = function(psw){
-
-};
+module.exports = router;

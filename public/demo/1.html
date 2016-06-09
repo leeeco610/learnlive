@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>insertAdjacentHTML插入新内容</title>
+   <script>
+       function addsome()
+       {
+           document.all.demo.insertAdjacentHTML("afterBegin","<h1> 在文本前容器内插入内容1</h1>"); //JQ prepend()
+           document.all.demo.insertAdjacentHTML("beforeEnd","<h2> 在文本后容器内插入内容2</h2>");  //JQ append()
+           document.all.demo.insertAdjacentHTML("beforeBegin","<h4> 在文本前容器外插入内容4</h4>");  //JQ before()
+           document.all.demo.insertAdjacentHTML("afterEnd","<h5> 在文本后容器外插入内容5</h5>");  //JQ after()
+       }
+   </script>
+</head>
+<body onload="addsome()">
+    <div id="demo" style="font-size:12px;color:#ff00ff;">原来的内容</div><hr>
+</body>
+</html>

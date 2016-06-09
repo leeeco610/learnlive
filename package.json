@@ -40,9 +40,6 @@
     "rev-del": "^1.0.5",
     "serve-favicon": "^2.3.0"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leeeco610/learnlive.git"
