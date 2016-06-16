@@ -9,7 +9,7 @@
         factory(jQuery);
     }
 }(function ($) {
-    var cropbox = function(options, el){
+    var imageCrop = function(options, el){
         var el = el || $(options.imageBox),
             obj =
             {
@@ -132,8 +132,8 @@
         return obj;
     };
 
-    jQuery.fn.cropbox = function(options){
-        return new cropbox(options, this);
+    jQuery.fn.imageCrop = function(options){
+        return new imageCrop(options, this);
     };
 }));
 
