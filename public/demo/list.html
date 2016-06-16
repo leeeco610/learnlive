@@ -25,7 +25,7 @@
             $.getJSON('/public/demo/demo.json',function (res) {
                 var arr = [];
                 $.each(res,function () {
-                    arr.push('<li><a href="'+this.url+'">'+this.name+'</a></li>');
+                    arr.push('<li><a target="_blank" href="'+this.url+'">'+this.name+'</a></li>');
                 });
                 document.all.list.insertAdjacentHTML("beforeEnd",arr.join(''));
             });
