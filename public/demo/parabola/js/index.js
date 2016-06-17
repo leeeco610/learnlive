@@ -1,5 +1,4 @@
-;
-(function () {
+;(function () {
     var _$ = function (_this) {
         return _this.constructor == jQuery ? _this : $(_this);
     };

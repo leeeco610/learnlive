@@ -39,10 +39,10 @@
 
 <body>
 <div class="btns" style="margin-top:20px">
-    <a href="#" class="btnA btn-danger" id="reset" rel="popover" title="A Title" style="">reset</a>
-    <a href="#" class="btnA btn-danger" id="run" rel="popover" title="A Title" style="">run</a>
-    <a href="#" class="btnA btn-danger" id="stop" rel="popover" title="A Title" style="">stop</a>
-    <a href="#" class="btnA btn-danger" id="setOptions" rel="popover" title="A Title" style="">setOptions</a>
+    <a href="#" class="btnA btn-danger" id="reset" rel="popover" title="A Title" style="">重置</a>
+    <a href="#" class="btnA btn-danger" id="run" rel="popover" title="A Title" style="">开始</a>
+    <a href="#" class="btnA btn-danger" id="stop" rel="popover" title="A Title" style="">暂停</a>
+    <a href="#" class="btnA btn-danger" id="setOptions" rel="popover" title="A Title" style="">到指定位置</a>
 </div>
 <div id="boll" class="boll"></div>
 <div id="target" class="target"></div>
@@ -70,6 +70,7 @@
             */
         }
     });
+    bool.start();
     $("#reset").click(function (event) {
         event.preventDefault();
         bool.reset()
@@ -89,6 +90,7 @@
             curvature: 0.001,
             duration: 1000
         });
+        bool.start();
     });
 </script>
 </body>
