@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>抛物线运动</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style type="text/css">
+        .boll {
+            width: 50px;
+            height: 50px;
+            background-color: #ff3333;
+            position: absolute;
+            top: 380px;
+            left: 100px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+        }
+
+        .target {
+            width: 50px;
+            height: 50px;
+            background-color: #CDCDCD;
+            position: absolute;
+            top: 180px;
+            left: 600px;
+            -moz-border-radius: 50px;
+            -webkit-border-radius: 50px;
+            border-radius: 50px;
+        }
+    </style>
+    <script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+
+<body>
+<div class="btns" style="margin-top:20px">
+    <a href="#" class="btnA btn-danger" id="reset" rel="popover" title="A Title" style="">reset</a>
+    <a href="#" class="btnA btn-danger" id="run" rel="popover" title="A Title" style="">run</a>
+    <a href="#" class="btnA btn-danger" id="stop" rel="popover" title="A Title" style="">stop</a>
+    <a href="#" class="btnA btn-danger" id="setOptions" rel="popover" title="A Title" style="">setOptions</a>
+</div>
+<div id="boll" class="boll"></div>
+<div id="target" class="target"></div>
+<script type="text/javascript">
+    var bool = new Parabola({
+        el: "#boll",
+        offset: [500, 100],
+        curvature: 0.005,
+        duration: 3000,
+        callback:function(){
+            alert("完成后回调")
+        },
+        stepCallback:function(x,y){
+//            console.log(x,y);
+            $("<div>").appendTo("body").css({
+                "position": "absolute",
+                "top": this.elOriginalTop + y,
+                "left":this.elOriginalLeft + x,
+                "background-color":"#CDCDCD",
+                "width":"5px",
+                "height":"5px",
+                "border-radius": "5px"
+            });
+        }
+    });
+    $("#reset").click(function (event) {
+        event.preventDefault();
+        bool.reset()
+    });
+    $("#run").click(function (event) {
+        event.preventDefault();
+        bool.start();
+    });
+    $("#stop").click(function (event) {
+        event.preventDefault();
+        bool.stop();
+    });
+    $("#setOptions").click(function (event) {
+        event.preventDefault();
+        bool.setOptions({
+            targetEl: $("#target"),
+            curvature: 0.001,
+            duration: 1000
+        });
+    });
+</script>
+</body>
+</html>

@@ -6,5 +6,9 @@
   {
     "name":"图片裁剪",
     "url":"http://learnlive.cn/public/demo/image_crop/index.html"
+  },
+  {
+    "name":"抛物线运动",
+    "url":"http://learnlive.cn/public/demo/parabola/index.html"
   }
 ]
