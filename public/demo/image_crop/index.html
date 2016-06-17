@@ -8,52 +8,28 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" type="text/css" href="css/imageCrop.css" />
+    <link rel="stylesheet" type="text/css" href="/public/css/common-plugins.css" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
 <body>
-<script src="/public/libs/jquery-1.11.1.min.js"></script>
-<script src="js/imageCrop.js"></script>
-<div class="imageBox-container">
-    <div class="imageBox">
-        <div class="thumbBox"></div>
-        <div class="spinner" style="display: none">Loading...</div>
+<div class="user-pic-container">
+    <div class="img-wrap">
+        <img id="userPic" src="img/user_pic.png" alt=""/>
     </div>
-    <div class="action">
-        <input type="file" id="file" style="float:left; width: 250px">
-        <input type="button" id="btnCrop" value="Crop" style="float: right">
-        <input type="button" id="btnZoomIn" value="+" style="float: right">
-        <input type="button" id="btnZoomOut" value="-" style="float: right">
-    </div>
-    <div class="cropped">
+    <div class="btn-choose-wrap">
+        <input id="btnChoose" type="file"/>
+        <span class="btn-inner">替换</span>
     </div>
 </div>
+<script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/public/js/common-plugins.js"></script>
 <script type="text/javascript">
-    $(window).load(function() {
-        var options = {
-            thumbBox: '.thumbBox',
-            spinner: '.spinner',
-            imgSrc: 'img/user_pic.png'
-        };
-        var cropper = $('.imageBox').imageCrop(options);
-        $('#file').on('change', function(){
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                options.imgSrc = e.target.result;
-                cropper = $('.imageBox').imageCrop(options);
-            };
-            reader.readAsDataURL(this.files[0]);
-            this.files = [];
+    $(function () {
+        $("#btnChoose").imageCropDialog({
+            callback:function () {
+
+            }
         });
-        $('#btnCrop').on('click', function(){
-            var img = cropper.getDataURL();
-            $('.cropped').append('<img src="'+img+'">');
-        });
-        $('#btnZoomIn').on('click', function(){
-            cropper.zoomIn();
-        });
-        $('#btnZoomOut').on('click', function(){
-            cropper.zoomOut();
-        })
     });
 </script>
 </body>

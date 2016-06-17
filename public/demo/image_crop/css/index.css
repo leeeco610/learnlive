@@ -1,0 +1,54 @@
+.user-pic-container {
+  width: 1000px;
+  margin: 0 auto;
+}
+.user-pic-container .img-wrap {
+  width: 150px;
+  height: 150px;
+  box-sizing: border-box;
+  background-color: #f6f6f6;
+  padding: 5px;
+}
+.user-pic-container .img-wrap img {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: 145px;
+  height: 145px;
+}
+.user-pic-container .btn-choose-wrap {
+  position: relative;
+  width: 150px;
+  box-sizing: border-box;
+  padding: 10px 50px;
+}
+.user-pic-container .btn-choose-wrap input[type='file'] {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.user-pic-container .btn-choose-wrap .btn-inner {
+  position: relative;
+  display: block;
+  color: #009DF5;
+  font-size: 16px;
+  line-height: 22px;
+  padding-left: 18px;
+  text-align: center;
+}
+.user-pic-container .btn-choose-wrap .btn-inner:before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background-image: url('../img/icon_choose_pic.png');
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+}

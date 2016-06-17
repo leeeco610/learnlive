@@ -240,7 +240,7 @@ $.simpleDialog = function (args) {
         title = def.title || "提示",  //title
         content =def.content || "内容...",  //content
         dialogW = def.width?parseInt(args.width,10):"600",
-        dialogT = def.top || "30%",
+        dialogT = def.top || null,
         contentMiddle = typeof def.contentMiddle !== "undefined" ? def.contentMiddle : false;  //内容是否以flex box布局居中
         bgClose = typeof def.bgClose !== 'undefined'?def.lock : false;
         bgCloseCallback = def.bgCloseCallback || function(){};
@@ -279,6 +279,7 @@ $.simpleDialog = function (args) {
     htmlArr.push('<div class="simple-dialog-outer animated zoomIn">');
     htmlArr.push('  <div class="simple-dialog-header">');
     htmlArr.push('      <div class="sdh-left">'+title+'</div>');
+    htmlArr.push('      <div class="sdh-right"><a class="btn-close" title="关闭">&times;</a></div>');
     htmlArr.push('  </div>');
     htmlArr.push('  <div class="simple-dialog-body clearfix">'+content+'</div>');
     htmlArr.push('  <div class="simple-dialog-footer">');
@@ -291,9 +292,15 @@ $.simpleDialog = function (args) {
 
     $dialog.focus();
 
+    var winH = $(window).height();
+    var dH = $dialog.height();
+    if(!dialogT){
+        dialogT = (winH - dH)/2;
+    }
+
     //设置弹出窗样式
-    $dialog.css({zIndex:zIndex}).css({top:dialogT.indexOf("%")>-1?dialogT:parseInt(dialogT,10)+"px"})
-        .find(".simple-dialog-outer").css({width:dialogW});
+    $dialog.css({zIndex:zIndex}).css({top:dialogT.toString().indexOf("%")>-1?dialogT:parseInt(dialogT,10)+"px"});
+        // .find(".simple-dialog-outer").css({width:dialogW});
     if(contentMiddle) {
         $dialog.find(".simple-dialog-body").addClass("display-flex");
     }
@@ -303,6 +310,11 @@ $.simpleDialog = function (args) {
             $.simpleDialogClose();
             bgCloseCallback();
         }
+    });
+    //点击关闭按钮
+    $dialog.find('.btn-close').off('click').on('click',function () {
+        $.simpleDialogClose();
+        bgCloseCallback();
     });
     //按钮点击事件
     $dialog.find(".sdf-btn a").click(function(){
@@ -606,5 +618,228 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     });
 };
 /**====================================================
- ***************   ***************************
+ ***************  图片裁剪插件  ************************
  ======================================================*/
+(function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else {
+        factory(jQuery);
+    }
+}(function ($) {
+    var imageCrop = function(options, el){
+        var el = el || $(options.imageBox),
+            obj =
+            {
+                state : {},
+                ratio : 1,
+                options : options,
+                imageBox : el,
+                thumbBox : el.find(options.thumbBox),
+                spinner : el.find(options.spinner),
+                image : new Image(),
+                getDataURL: function ()
+                {
+                    var width = this.thumbBox.width(),
+                        height = this.thumbBox.height(),
+                        canvas = document.createElement("canvas"),
+                        dim = el.css('background-position').split(' '),
+                        size = el.css('background-size').split(' '),
+                        dx = parseInt(dim[0]) - el.width()/2 + width/2,
+                        dy = parseInt(dim[1]) - el.height()/2 + height/2,
+                        dw = parseInt(size[0]),
+                        dh = parseInt(size[1]),
+                        sh = parseInt(this.image.height),
+                        sw = parseInt(this.image.width);
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    var context = canvas.getContext("2d");
+                    context.drawImage(this.image, 0, 0, sw, sh, dx, dy, dw, dh);
+                    var imageData = canvas.toDataURL('image/png');
+                    return imageData;
+                },
+                getBlob: function()
+                {
+                    var imageData = this.getDataURL();
+                    var b64 = imageData.replace('data:image/png;base64,','');
+                    var binary = atob(b64);
+                    var array = [];
+                    for (var i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i));
+                    }
+                    return  new Blob([new Uint8Array(array)], {type: 'image/png'});
+                },
+                zoomIn: function ()
+                {
+                    this.ratio*=1.1;
+                    setBackground();
+                },
+                zoomOut: function ()
+                {
+                    this.ratio*=0.9;
+                    setBackground();
+                }
+            },
+            setBackground = function()
+            {
+                var w =  parseInt(obj.image.width)*obj.ratio;
+                var h =  parseInt(obj.image.height)*obj.ratio;
+
+                var pw = (el.width() - w) / 2;
+                var ph = (el.height() - h) / 2;
+
+                el.css({
+                    'background-image': 'url(' + obj.image.src + ')',
+                    'background-size': w +'px ' + h + 'px',
+                    'background-position': pw + 'px ' + ph + 'px',
+                    'background-repeat': 'no-repeat'});
+            },
+            imgMouseDown = function(e)
+            {
+                e.stopImmediatePropagation();
+
+                obj.state.dragable = true;
+                obj.state.mouseX = e.clientX;
+                obj.state.mouseY = e.clientY;
+            },
+            imgMouseMove = function(e)
+            {
+                e.stopImmediatePropagation();
+
+                if (obj.state.dragable)
+                {
+                    var x = e.clientX - obj.state.mouseX;
+                    var y = e.clientY - obj.state.mouseY;
+
+                    var bg = el.css('background-position').split(' ');
+
+                    var bgX = x + parseInt(bg[0]);
+                    var bgY = y + parseInt(bg[1]);
+
+                    el.css('background-position', bgX +'px ' + bgY + 'px');
+
+                    obj.state.mouseX = e.clientX;
+                    obj.state.mouseY = e.clientY;
+                }
+            },
+            imgMouseUp = function(e)
+            {
+                e.stopImmediatePropagation();
+                obj.state.dragable = false;
+            },
+            zoomImage = function(e)
+            {
+                e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0 ? obj.ratio*=1.1 : obj.ratio*=0.9;
+                setBackground();
+            };
+
+        obj.spinner.show();
+        obj.image.onload = function() {
+            obj.spinner.hide();
+            setBackground();
+
+            el.bind('mousedown', imgMouseDown);
+            el.bind('mousemove', imgMouseMove);
+            $(window).bind('mouseup', imgMouseUp);
+            el.bind('mousewheel DOMMouseScroll', zoomImage);
+        };
+        obj.image.src = options.imgSrc;
+        el.on('remove', function(){$(window).unbind('mouseup', imgMouseUp)});
+
+        return obj;
+    };
+
+    jQuery.fn.imageCrop = function(options){
+        return new imageCrop(options, this);
+    };
+
+    /*=======================================*/
+    var imageCropDialog = function (options,el) {
+        var def_opt = {
+            showPic:'#userPic',
+            thumbBox: '.thumbBox',
+            spinner: '.spinner',
+            imgSrc: 'img/user_pic.png',
+            btnCrop:'.btn-crop',
+            btnZoomIn:'.btn-zoomIn',
+            btnZoomOut:'.btn-zoomOut',
+            preView:'.cropped',
+            callback:function () {}
+        };
+        var cropper;
+        options = $.extend(def_opt,options);
+        el = el ||  $(options.imageBox)[0];
+        var createDialog = function (callback) {
+            var arr = [];
+            arr.push('<div class="imageBox-container" id="imageBoxContainer">');
+            arr.push('  <div class="imageBox">');
+            arr.push('      <div class="thumbBox"></div>');
+            arr.push('      <div class="spinner">Loading...</div>');
+            arr.push('  </div>');
+            arr.push('  <div class="action">');
+            arr.push('      <input type="button" title="缩小" class="btn-zoomOut" value="-">');
+            arr.push('      <input type="button" title="放大" class="btn-zoomIn" value="+">');
+            arr.push('      <input type="button" title="预览" class="btn-crop" value="预览">');
+            arr.push('  </div>');
+            arr.push('  <div class="cropped"></div>');
+            arr.push('</div>');
+
+            //dialog
+            $.simpleDialog({
+                title:"编辑图像",
+                content:arr.join(''),
+                btn:[
+                    {
+                        name:'确定',
+                        callback:function () {
+                            var img = cropper.getDataURL();
+                            $(options.showPic).attr('src',img);
+                            options.callback();
+                            $.simpleDialogClose();
+                            return false;
+                        }
+                    }
+                ]
+            });
+
+            typeof callback === "function" && callback();
+        };
+        //change
+        var changeHandle = function () {
+            var self = this;
+            var readFile = function () {
+                var $box = $("#imageBoxContainer");
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    options.imgSrc = e.target.result;
+                    cropper = $box.find('.imageBox').imageCrop(options);
+                    //preview
+                    setTimeout(function () {
+                        $box.find(options.btnCrop).trigger('click');
+                    },300);
+                };
+                reader.readAsDataURL(self.files[0]);
+                // self.files = []
+
+                //click  event
+                $box.find(options.btnCrop).off('click').on('click', function(){
+                    var img = cropper.getDataURL();
+                    $box.find(options.preView).html('<div class="preview-text">预览</div><img src="'+img+'">');
+                });
+                $box.find(options.btnZoomIn).off('click').on('click', function(){
+                    cropper.zoomIn();
+                });
+                $box.find(options.btnZoomOut).off('click').on('click', function(){
+                    cropper.zoomOut();
+                })
+
+            };
+            createDialog(readFile);
+        };
+        $(el).off('change').on('change',changeHandle);
+    };
+    $.fn.imageCropDialog = function (options) {
+        return new imageCropDialog(options,this);
+    }
+}));

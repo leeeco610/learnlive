@@ -1,6 +1,8 @@
 
+*{-webkit-tap-highlight-color: transparent;outline: none;}
 ul,li{list-style: none;padding: 0; margin: 0;}
 a{outline: none !important;-webkit-tap-highlight-color: transparent;}
+html,body,img{margin: 0;padding: 0;}
 /*==============================复用样式===============================*/
 .display-flex{
   display: -webkit-flex;
@@ -22,29 +24,99 @@ a{outline: none !important;-webkit-tap-highlight-color: transparent;}
 .simple-dialog{position: fixed;left:50%;top:30%;z-index: 9899;}
 .simple-dialog .simple-dialog-outer{float:left;left:-50%;position: relative;background-color:#fff;border-radius: 4px;}
 .simple-dialog .simple-dialog-header{height: 66px;line-height: 66px;border-top-left-radius: 5px;border-top-right-radius: 5px;}
-.simple-dialog .simple-dialog-header .sdh-left{float: left;width:100%;height:66px;line-height:22px;padding:22px 15px;letter-spacing: 0.1em;font: 16px 'Microsoft Yahei','宋体';text-align: left;color: #333;font-weight: bold;overflow: hidden;}
-.simple-dialog .simple-dialog-header .sdh-right a{float: right;margin-right: 10px;color: #ff0000;font-size: 14px;cursor: pointer;}
-.simple-dialog .simple-dialog-header .sdh-right a:hover{color: #ff0000;font-size: 24px;font-weight: bold;text-decoration:none;}
+.simple-dialog .simple-dialog-header .sdh-left{float: left;line-height:22px;padding:22px 15px;letter-spacing: 0.1em;font: 16px 'Microsoft Yahei','宋体';text-align: left;color: #333;font-weight: bold;overflow: hidden;}
+.simple-dialog .simple-dialog-header .sdh-right a{float: right;margin-right: 10px;color: #333;font-size: 20px;font-weight: bold;cursor: pointer;-webkit-transition: all .5s;transition: all .5s;}
+.simple-dialog .simple-dialog-header .sdh-right a:hover{text-decoration:none;color:#ff0000;-webkit-transform: rotateZ(360deg);transform: rotateZ(360deg);}
 .simple-dialog .simple-dialog-body{border-top:1px solid #ccc;border-bottom:1px solid #ccc;overflow-x:hidden;overflow-y:auto;color:#333;word-wrap: break-word;word-break:break-all;min-height: 88px;padding: 10px 15px;font-size:14px;font-family:tahoma, sans-serif;}
 .simple-dialog .simple-dialog-footer{padding:16px 0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
 .simple-dialog .simple-dialog-footer .sdf-btn{position: relative;box-sizing:border-box;top: 0;text-align: right;height: 34px;}
-.simple-dialog .simple-dialog-footer a{display:inline-block;text-decoration:none;border:1px solid #999;border-radius:4px;height: 34px;line-height:22px;padding:5px 20px;color:#555;margin-right:15px;letter-spacing: 2px;font:15px "Microsoft Yahei","宋体";text-align: center;cursor:pointer;}
+.simple-dialog .simple-dialog-footer a{display:inline-block;-webkit-user-select:none;text-decoration:none;border:1px solid #999;border-radius:4px;line-height:22px;padding:5px 20px;color:#555;margin-right:15px;letter-spacing: 2px;font:15px "Microsoft Yahei","宋体";text-align: center;cursor:pointer;}
 .simple-dialog .simple-dialog-footer a:last-child{left:auto;right: 0}
+.simple-dialog .simple-dialog-footer a:hover{color: #009DF5;border-color: #009DF5;}
+.simple-dialog .simple-dialog-footer a:active{background-color: #ddd;}
 
-/*================================弹出窗 mobile==================================*/
-.lock-screen{position:fixed;z-index:9898;display: block;width: 100%;height: 100%;background-color:rgba(0,0,0,.7);}
-.simple-dialog-mobile{width: 100%;height: 100%;position: fixed;z-index: 9899;}
-.simple-dialog-mobile .simple-dialog-outer{float:left;left:45%;position: relative;width: 90%;}
-.simple-dialog-mobile .simple-dialog-inner{float:left;width:90%;left:-40%;position:relative;border: 1px solid #999;background-color:#fff;border-radius: 5px;}
-.simple-dialog-mobile .simple-dialog-header{height: 32px;line-height: 32px;border-top-left-radius: 5px;border-top-right-radius: 5px;}
-.simple-dialog-mobile .simple-dialog-header .sdh-left{float: left;width:100%;padding-top:10px;letter-spacing: 0.1em;font: 16px 'Microsoft Yahei','宋体';text-align: center;color: #212121;font-weight: bold;}
-.simple-dialog-mobile .simple-dialog-header .sdh-right a{float: right;margin-right: 10px;color: #ff0000;font-size: 14px;cursor: pointer;}
-.simple-dialog-mobile .simple-dialog-header .sdh-right a:hover{color: #ff0000;font-size: 24px;font-weight: bold;text-decoration:none;}
-.simple-dialog-mobile .simple-dialog-body{overflow-x:hidden;overflow-y:auto;color:#333;line-height:16px;word-wrap: break-word;word-break:break-all;min-height: 23px;padding: 10px 15px;font-size:14px;font-family:tahoma, sans-serif;}
-.simple-dialog-mobile .simple-dialog-footer{padding:9px 10px 15px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;}
-.simple-dialog-mobile .simple-dialog-footer .sdf-btn{position: relative;box-sizing:border-box;top: 0;text-align: center;height: 40px;}
-.simple-dialog-mobile .simple-dialog-footer a{position: absolute;text-decoration:none;left:0;top:0;width:48%;border:1px solid #7D7D7D;border-radius:8px;height: 40px;line-height:22px;padding:8px 0;color:#212121;letter-spacing: 2px;font:15px "Microsoft Yahei","宋体";text-align: center;cursor:pointer;}
-.simple-dialog-mobile .simple-dialog-footer a:last-child{left:auto;right: 0}
+/*================================ 图片裁剪插件 ==================================*/
+.imageBox-container{
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+  .imageBox {
+    position: relative;
+    height: 300px;
+    width: 300px;
+    border:1px solid #aaa;
+    background: #fff;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    cursor:move;
+    .thumbBox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 152px;
+      height: 152px;
+      margin-top: -76px;
+      margin-left: -76px;
+      box-sizing: border-box;
+      border: 1px solid rgb(102, 102, 102);
+      box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+      background: none repeat scroll 0% 0% transparent;
+    }
+    .spinner {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      text-align: center;
+      line-height: 300px;
+      background: rgba(0,0,0,0.7);
+    }
+  }
+  .action {
+    width: 300px;
+    height: 20px;
+    margin: 10px 0 0;
+    text-align: center;
+    &::after{
+      content: '';
+      display: table;
+      clear: both;
+    }
+    input[type='button']{
+      cursor: pointer;
+      border:1px solid #aaa;
+      background-color: #fff;
+      border-radius: 4px;
+      &.btn-zoomIn,
+      &.btn-zoomOut{
+        margin-right: 10px;
+      }
+      &:hover{
+        color: #009DF5;
+        border-color: #009DF5;
+      }
+      &:active{
+        background-color: #ddd;
+      }
+    }
+  }
+  .cropped{
+    position: absolute;
+    top:0;
+    left: 350px;
+    .preview-text{
+      margin-bottom: 10px;
+    }
+    img{
+      display: block;
+      padding: 1px;
+      border: 1px solid #aaa;
+    }
+  }
+}
+
 /*==============================动画样式=======================*/
 .animated {
   -webkit-animation-duration: 0.5s;

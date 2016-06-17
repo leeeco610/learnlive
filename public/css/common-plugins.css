@@ -1,3 +1,7 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
 ul,
 li {
   list-style: none;
@@ -7,6 +11,12 @@ li {
 a {
   outline: none !important;
   -webkit-tap-highlight-color: transparent;
+}
+html,
+body,
+img {
+  margin: 0;
+  padding: 0;
 }
 /*==============================复用样式===============================*/
 .display-flex {
@@ -56,8 +66,6 @@ a {
 }
 .simple-dialog .simple-dialog-header .sdh-left {
   float: left;
-  width: 100%;
-  height: 66px;
   line-height: 22px;
   padding: 22px 15px;
   letter-spacing: 0.1em;
@@ -70,15 +78,18 @@ a {
 .simple-dialog .simple-dialog-header .sdh-right a {
   float: right;
   margin-right: 10px;
-  color: #ff0000;
-  font-size: 14px;
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
+  -webkit-transition: all .5s;
+  transition: all .5s;
 }
 .simple-dialog .simple-dialog-header .sdh-right a:hover {
-  color: #ff0000;
-  font-size: 24px;
-  font-weight: bold;
   text-decoration: none;
+  color: #ff0000;
+  -webkit-transform: rotateZ(360deg);
+  transform: rotateZ(360deg);
 }
 .simple-dialog .simple-dialog-body {
   border-top: 1px solid #ccc;
@@ -107,10 +118,10 @@ a {
 }
 .simple-dialog .simple-dialog-footer a {
   display: inline-block;
+  -webkit-user-select: none;
   text-decoration: none;
   border: 1px solid #999;
   border-radius: 4px;
-  height: 34px;
   line-height: 22px;
   padding: 5px 20px;
   color: #555;
@@ -124,109 +135,93 @@ a {
   left: auto;
   right: 0;
 }
-/*================================弹出窗 mobile==================================*/
-.lock-screen {
-  position: fixed;
-  z-index: 9898;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+.simple-dialog .simple-dialog-footer a:hover {
+  color: #009DF5;
+  border-color: #009DF5;
 }
-.simple-dialog-mobile {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  z-index: 9899;
+.simple-dialog .simple-dialog-footer a:active {
+  background-color: #ddd;
 }
-.simple-dialog-mobile .simple-dialog-outer {
-  float: left;
-  left: 45%;
+/*================================ 图片裁剪插件 ==================================*/
+.imageBox-container {
   position: relative;
-  width: 90%;
+  width: 600px;
+  margin: 0 auto;
 }
-.simple-dialog-mobile .simple-dialog-inner {
-  float: left;
-  width: 90%;
-  left: -40%;
+.imageBox-container .imageBox {
   position: relative;
-  border: 1px solid #999;
-  background-color: #fff;
-  border-radius: 5px;
+  height: 300px;
+  width: 300px;
+  border: 1px solid #aaa;
+  background: #fff;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  cursor: move;
 }
-.simple-dialog-mobile .simple-dialog-header {
-  height: 32px;
-  line-height: 32px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-.simple-dialog-mobile .simple-dialog-header .sdh-left {
-  float: left;
-  width: 100%;
-  padding-top: 10px;
-  letter-spacing: 0.1em;
-  font: 16px 'Microsoft Yahei', '宋体';
-  text-align: center;
-  color: #212121;
-  font-weight: bold;
-}
-.simple-dialog-mobile .simple-dialog-header .sdh-right a {
-  float: right;
-  margin-right: 10px;
-  color: #ff0000;
-  font-size: 14px;
-  cursor: pointer;
-}
-.simple-dialog-mobile .simple-dialog-header .sdh-right a:hover {
-  color: #ff0000;
-  font-size: 24px;
-  font-weight: bold;
-  text-decoration: none;
-}
-.simple-dialog-mobile .simple-dialog-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-  color: #333;
-  line-height: 16px;
-  word-wrap: break-word;
-  word-break: break-all;
-  min-height: 23px;
-  padding: 10px 15px;
-  font-size: 14px;
-  font-family: tahoma, sans-serif;
-}
-.simple-dialog-mobile .simple-dialog-footer {
-  padding: 9px 10px 15px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.simple-dialog-mobile .simple-dialog-footer .sdf-btn {
-  position: relative;
-  box-sizing: border-box;
-  top: 0;
-  text-align: center;
-  height: 40px;
-}
-.simple-dialog-mobile .simple-dialog-footer a {
+.imageBox-container .imageBox .thumbBox {
   position: absolute;
-  text-decoration: none;
-  left: 0;
-  top: 0;
-  width: 48%;
-  border: 1px solid #7D7D7D;
-  border-radius: 8px;
-  height: 40px;
-  line-height: 22px;
-  padding: 8px 0;
-  color: #212121;
-  letter-spacing: 2px;
-  font: 15px "Microsoft Yahei", "宋体";
-  text-align: center;
-  cursor: pointer;
+  top: 50%;
+  left: 50%;
+  width: 152px;
+  height: 152px;
+  margin-top: -76px;
+  margin-left: -76px;
+  box-sizing: border-box;
+  border: 1px solid #666666;
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+  background: none repeat scroll 0% 0% transparent;
 }
-.simple-dialog-mobile .simple-dialog-footer a:last-child {
-  left: auto;
+.imageBox-container .imageBox .spinner {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
   right: 0;
+  text-align: center;
+  line-height: 300px;
+  background: rgba(0, 0, 0, 0.7);
+}
+.imageBox-container .action {
+  width: 300px;
+  height: 20px;
+  margin: 10px 0 0;
+  text-align: center;
+}
+.imageBox-container .action::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.imageBox-container .action input[type='button'] {
+  cursor: pointer;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  border-radius: 4px;
+}
+.imageBox-container .action input[type='button'].btn-zoomIn,
+.imageBox-container .action input[type='button'].btn-zoomOut {
+  margin-right: 10px;
+}
+.imageBox-container .action input[type='button']:hover {
+  color: #009DF5;
+  border-color: #009DF5;
+}
+.imageBox-container .action input[type='button']:active {
+  background-color: #ddd;
+}
+.imageBox-container .cropped {
+  position: absolute;
+  top: 0;
+  left: 350px;
+}
+.imageBox-container .cropped .preview-text {
+  margin-bottom: 10px;
+}
+.imageBox-container .cropped img {
+  display: block;
+  padding: 1px;
+  border: 1px solid #aaa;
 }
 /*==============================动画样式=======================*/
 .animated {
