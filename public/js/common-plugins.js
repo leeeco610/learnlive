@@ -892,8 +892,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var parentW = $parent.width();//内容宽度不计算border parseInt($parent.css('border-width'))*2;
         var unitW = $unit.width() + parseInt($unit.css('padding-left'))+parseInt($unit.css('padding-right'))+parseInt($unit.css('border-width'))*2;
         var maxW = parentW - unitW - parseInt($(this).css('padding-left')) - parseInt($(this).css('padding-right'));
-        
-        if(currentW < (maxW-15)){  //右侧预留15个像素
+
+        if(currentW > 30 && currentW < (maxW-15)){  //右侧预留15个像素
             $(this).width($ic.width());
         }
     };
@@ -906,6 +906,14 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             $unit.css({display:'inline-block'});
         }
     };
+    var blurHandle = function () {
+        var val = $.trim($(this).val());
+        var $unit = $(this).siblings('.unit');
+        if(val === ""){
+            $(this).css({width:'100%'}).val('');
+            $unit.hide();
+        }
+    };
     var keydownHandle = function (e) {
         if(e.keyCode == 8){
             inputHandle.call(this);
@@ -913,6 +921,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     };
     var input = typeof window.onpropertychange === "undefined" ? "input":"propertychange";
     $(document).on('focus','input[data-width="auto"]',focusHandle);
+    $(document).on('blur','input[data-width="auto"]',blurHandle);
     $(document).on(input,'input[data-width="auto"]',inputHandle);
     $(document).on('keydown','input[data-width="auto"]',keydownHandle);
 }(jQuery);
