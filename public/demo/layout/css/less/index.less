@@ -1,0 +1,43 @@
+.content{
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.input-wrap{
+  position: relative;
+  font-size: 14px;
+  width: 280px;
+  height: 36px;
+  border:1px solid #aaa;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+  .input-content{
+    position: absolute;
+    z-index: -1;
+    top:0;
+    left: 0;
+    visibility: hidden;
+    height: 100%;
+    max-width: 100%;
+  }
+  input{
+    font-size: 14px;
+    box-sizing: border-box;
+    overflow: visible;
+    width: 100%;
+    line-height: 24px;
+    border: 0;
+    background-color: transparent;
+    height: 100%;
+    padding: 5px 5px 5px 15px;
+  }
+  .unit{
+    display: none;
+    line-height: 34px;
+  }
+  &:hover{
+    border-color: #009DF5;
+  }
+}

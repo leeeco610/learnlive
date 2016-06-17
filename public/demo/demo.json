@@ -1,14 +1,18 @@
 [
   {
+    "name":"布局集合",
+    "url":"http://www.learnlive.cn/public/demo/layout/index.html"
+  },
+  {
     "name":"城市二级联动",
-    "url":"http://learnlive.cn/public/demo/city_linkage/index.html"
+    "url":"http://www.learnlive.cn/public/demo/city_linkage/index.html"
   },
   {
     "name":"图片裁剪",
-    "url":"http://learnlive.cn/public/demo/image_crop/index.html"
+    "url":"http://www.learnlive.cn/public/demo/image_crop/index.html"
   },
   {
     "name":"抛物线运动",
-    "url":"http://learnlive.cn/public/demo/parabola/index.html"
+    "url":"http://www.learnlive.cn/public/demo/parabola/index.html"
   }
 ]

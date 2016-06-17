@@ -872,3 +872,47 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         };
     }
 }();
+/**====================================================
+ ***************  输入框--宽度根据内容自适应 *********
+ ======================================================*/
++function ($) {
+    var inputHandle = function () {
+        var val = $(this).val();
+        if(!$.isNumeric(val)){
+            $(this).val(function () {
+                return (val+"").substring(0,(val+"").length-1);
+            });
+            return false;
+        }
+        var $ic = $(this).siblings('.input-content');
+        $ic.text(val);
+        var currentW = $ic.width();
+        var $parent = $(this).parent();
+        var $unit = $(this).siblings('.unit');
+        var parentW = $parent.width();//内容宽度不计算border parseInt($parent.css('border-width'))*2;
+        var unitW = $unit.width() + parseInt($unit.css('padding-left'))+parseInt($unit.css('padding-right'))+parseInt($unit.css('border-width'))*2;
+        var maxW = parentW - unitW - parseInt($(this).css('padding-left')) - parseInt($(this).css('padding-right'));
+        
+        if(currentW < (maxW-15)){  //右侧预留15个像素
+            $(this).width($ic.width());
+        }
+    };
+    var focusHandle = function () {
+        var $ic = $(this).siblings('.input-content');
+        var $unit = $(this).siblings('.unit');
+        var icW = $ic.width();
+        if(icW < 50){
+            $(this).width(30);
+            $unit.css({display:'inline-block'});
+        }
+    };
+    var keydownHandle = function (e) {
+        if(e.keyCode == 8){
+            inputHandle.call(this);
+        }
+    };
+    var input = typeof window.onpropertychange === "undefined" ? "input":"propertychange";
+    $(document).on('focus','input[data-width="auto"]',focusHandle);
+    $(document).on(input,'input[data-width="auto"]',inputHandle);
+    $(document).on('keydown','input[data-width="auto"]',keydownHandle);
+}(jQuery);
