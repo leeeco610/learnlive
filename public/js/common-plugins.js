@@ -906,7 +906,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             $unit.css({display:'inline-block'});
         }
     };
-    var blurHandle = function () {
+    var blurHandle = function (e) {
         var val = $.trim($(this).val());
         var $unit = $(this).siblings('.unit');
         if(val === ""){
