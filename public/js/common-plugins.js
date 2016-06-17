@@ -893,7 +893,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var unitW = $unit.width() + parseInt($unit.css('padding-left'))+parseInt($unit.css('padding-right'))+parseInt($unit.css('border-width'))*2;
         var maxW = parentW - unitW - parseInt($(this).css('padding-left')) - parseInt($(this).css('padding-right'));
 
-        if(currentW > 50 && currentW < (maxW-15)){  //右侧预留15个像素
+        if(currentW > 30 && currentW < (maxW-15)){  //右侧预留15个像素
             $(this).width($ic.width());
         }
     };
