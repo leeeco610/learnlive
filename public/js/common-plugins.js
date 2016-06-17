@@ -919,9 +919,17 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             inputHandle.call(this);
         }
     };
+    var keyupHandle = function (e) {
+        if(e.keyCode == 8){
+            var val = $(this).val();
+            var $ic = $(this).siblings('.input-content');
+            $ic.text(val);
+        }
+    };
     var input = typeof window.onpropertychange === "undefined" ? "input":"propertychange";
     $(document).on('focus','input[data-width="auto"]',focusHandle);
     $(document).on('blur','input[data-width="auto"]',blurHandle);
     $(document).on(input,'input[data-width="auto"]',inputHandle);
     $(document).on('keydown','input[data-width="auto"]',keydownHandle);
+    $(document).on('keyup','input[data-width="auto"]',keyupHandle);
 }(jQuery);
