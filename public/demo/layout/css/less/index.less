@@ -4,6 +4,50 @@
   h1{
     text-align: center;
   }
+  ul{
+    li:nth-child(2){
+      .w375{
+        width: 375px;
+        .box{
+          position: relative;
+          float: left;
+          width: 47%;
+          margin-left: 2%;
+          margin-bottom: 2%;
+          background: #ccc;
+          &:after{
+            display: block;
+            content: '';
+            margin-top: 100%;
+          }
+        }
+        &:after{
+          content: '';
+          display: table;
+          clear: both;
+        }
+      }
+    }
+    li:nth-child(3){
+      .w375{
+        width: 375px;
+        .box{
+          position: relative;
+          float: left;
+          width: 47%;
+          padding-top: 47%;
+          margin-left: 2%;
+          margin-bottom: 2%;
+          background: #ccc;
+        }
+        &:after{
+          content: '';
+          display: table;
+          clear: both;
+        }
+      }
+    }
+  }
 }
 
 .input-wrap{

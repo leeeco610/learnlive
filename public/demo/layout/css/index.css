@@ -5,6 +5,44 @@
 .content h1 {
   text-align: center;
 }
+.content ul li:nth-child(2) .w375 {
+  width: 375px;
+}
+.content ul li:nth-child(2) .w375 .box {
+  position: relative;
+  float: left;
+  width: 47%;
+  margin-left: 2%;
+  margin-bottom: 2%;
+  background: #ccc;
+}
+.content ul li:nth-child(2) .w375 .box:after {
+  display: block;
+  content: '';
+  margin-top: 100%;
+}
+.content ul li:nth-child(2) .w375:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.content ul li:nth-child(3) .w375 {
+  width: 375px;
+}
+.content ul li:nth-child(3) .w375 .box {
+  position: relative;
+  float: left;
+  width: 47%;
+  padding-top: 47%;
+  margin-left: 2%;
+  margin-bottom: 2%;
+  background: #ccc;
+}
+.content ul li:nth-child(3) .w375:after {
+  content: '';
+  display: table;
+  clear: both;
+}
 .input-wrap {
   position: relative;
   font-size: 14px;
