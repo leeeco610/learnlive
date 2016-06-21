@@ -14,5 +14,9 @@
   {
     "name":"抛物线运动",
     "url":"http://www.learnlive.cn/public/demo/parabola/index.html"
+  },
+  {
+    "name":"元素拖动排序",
+    "url":"http://www.learnlive.cn/public/demo/drag_sort/index.html"
   }
 ]
