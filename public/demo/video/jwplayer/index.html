@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <title>jwplayer支持手机视频播放器 </title>
+        <meta content="" name="Keywords">
+        <meta content="" name="Description">
+        <meta name="format-detection" content="telephone=no">
+    </head>
+    <body>
+        <div style="width:300px;height:250px;margin:30px auto">
+        <div id="mediaplayer"></div> 
+        </div>
+        <script src="jwplayer/jwplayer.js"></script>
+        <script type="text/javascript">
+            jwplayer('mediaplayer').setup({
+                'flashplayer': 'jwplayer/jwplayer.flash.swf',
+                'image': 'http://bcs.duapp.com/images-link/3.jpg',
+                'id': 'playerID',
+                'width': '300px',
+                'height': '250px',
+                'aspectratio': '10:6',
+                'file': 'test.mp4'
+            });
+        </script>
+    </body>
+</html>
+>

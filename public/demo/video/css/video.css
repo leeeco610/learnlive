@@ -1,0 +1,44 @@
+.common_video_contain {
+  object-fit: contain !important;
+}
+video:-webkit-full-screen {
+  object-fit: contain !important;
+}
+video:full-screen {
+  object-fit: contain !important;
+}
+video:fullscreen {
+  object-fit: contain !important;
+}
+.video-player {
+  position: absolute;
+  z-index: 100;
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+.video-player video {
+  position: absolute;
+  z-index: 101;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  object-fit: contain;
+  width: 100%;
+  max-height: 100%;
+  background-color: #fff;
+}
+.video-player .btn-video-close {
+  display: none;
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  z-index: 999;
+  font-size: 2rem;
+  line-height: 1;
+  color: #fff !important;
+}

@@ -18,5 +18,9 @@
   {
     "name":"元素拖动排序",
     "url":"http://www.learnlive.cn/public/demo/drag_sort/index.html"
-  }
+  },
+  {
+    "name":"红心点赞效果",
+    "url":"http://www.learnlive.cn/public/demo/click_like/index.html"
+  },
 ]

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/video.css" />
+</head>
+<body>
+<div class="page-group">
+    <div class="page current" id="pageCaseVideo">
+        <div class="video-player" id="videoPlayer">
+            <a href="javascript:void(0);" class="btn-video-close">&times;</a>
+            <video name="media" autoplay preload>
+                <source src="" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</div>
+<script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js' charset='utf-8'></script>
+<script type="text/javascript">
+    var DATA={
+        VIDEO_TEST:'jwplayer/test.mp4'
+    };
+
+    //init
+    function init() {
+        var $vp = $('#videoPlayer');
+        //video全屏
+        var fullScreen = function (vd) {
+            if(vd.requestFullScreen){
+                vd.requestFullScreen();
+            }else if(vd.webkitRequestFullScreen){
+                vd.webkitRequestFullScreen();
+            }
+        };
+        //video取消全屏
+        var cancelFullScreen = function () {
+            if(document.exitFullScreen){
+                document.exitFullScreen();
+            }else if(document.webkitCancelFullScreen){
+                document.webkitCancelFullScreen();
+            }
+        };
+
+        //关闭
+        function closeVideo() {
+            var video = $vp.find('video')[0];
+            if(!video.paused){
+                video.pause();
+                $vp.hide();
+            }
+        }
+        $vp.find('.btn-video-close').off('click').on('click',closeVideo);
+
+        //视频播放
+        function videoPlay() {
+            var url = localStorage.getItem('WEIZHI_VIDEO_URL') || DATA.VIDEO_TEST;
+
+            $vp.find('video').attr('src',url);
+            $vp.find('video')[0].load();  //重新加载
+            $vp.show();
+        }
+        videoPlay();
+
+        //点击事件执行函数
+        var clickHandle = function () {
+            if(!this.paused){
+                this.pause();
+                $(this).attr('controls',true);
+            }else{
+                this.play();
+                $(this).removeAttr('controls');
+            }
+        };
+        //暂停
+        $vp.find('video').off('click').on('click',clickHandle);
+
+        var video = $vp.find('video')[0];
+        video.play();
+        if(video.paused){  //一些浏览器无法自动播放
+            $(video).attr('controls',true);
+        }
+
+    }
+
+    $(function () {
+        //pageInit
+        $(document).on("pageInit", function() {
+            init();
+        });
+        $.init();
+    });
+</script>
+</body>
+</html>
