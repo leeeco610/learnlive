@@ -13,7 +13,6 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var article = require('./routes/article');
 var mall = require('./routes/mall');
-var demo = require('./routes/demo');
 var tools = require('./routes/tools');
 
 var app = express();
@@ -29,13 +28,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, './')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/user', user);
 app.use('/article',article);
 app.use('/mall',mall);
-app.use('/demo',demo);
 app.use('/tools',tools);
 
 // catch 404 and forward to error handler
