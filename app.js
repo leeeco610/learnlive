@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+// var MongoStore = require('connect-mongo')(express);
+// var flash = require('connect-flash');
 
 //mongoose
 //mongoose.connect('mongodb://localhost/learnlive');
@@ -16,6 +18,7 @@ var mall = require('./routes/mall');
 var tools = require('./routes/tools');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
