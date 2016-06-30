@@ -22,5 +22,9 @@
   {
     "name":"红心点赞效果",
     "url":"http://www.learnlive.cn/public/demo/click_like/index.html"
+  },
+  {
+    "name":"倒计时插件",
+    "url":"http://www.learnlive.cn/public/demo/count_down/index.html"
   }
 ]

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>倒计时插件</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <link href="css/fashionfoucs_lrtk.css" rel="stylesheet" />
+    <script src="/public/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="js/timedown.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('#countdown_dashboard').countDown({
+                targetDate: {
+                    'day': 		1,
+                    'month': 	10,
+                    'year': 	2016,
+                    'hour': 	9,
+                    'min': 		0,
+                    'sec': 		0
+                }
+            });
+        });
+    </script>
+<body>
+<!-- 代码 开始 -->
+<ul id="banner_img">
+    <li class="item1">
+        <div class="wrapper">
+            <div id="countdown_dashboard">
+                <div class="dash days_dash">
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+                <div class="dash hours_dash">
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+                <div class="dash minutes_dash">
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+                <div class="dash seconds_dash">
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                    <div class="digit">
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="kkg_timetoor"></div>
+        </div>
+    </li>
+</ul>
+<!-- 代码 结束 -->
+</body>
+</html>

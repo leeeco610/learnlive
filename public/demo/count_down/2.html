@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style type="text/css">
+        body{ font:normal 12px/24px '微软雅黑',tahoma;}
+        .wrapper {
+            margin:0px auto;
+            padding:20px;
+            border:1px solid #CCC;
+            width:550px;
+            font-size:12px;
+        }
+        br {
+            clear: both;
+        }
+        .cntSeparator {
+            font-size: 54px;
+            margin: 10px 7px;
+            color: #000;
+        }
+        .desc {
+            margin: 7px 3px;
+        }
+        .desc div {
+            float: left;
+            font-family: Arial;
+            width: 70px;
+            margin-right: 65px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<!-- 代码 开始 -->
+<div class="wrapper">
+    <div id="counter"></div>
+    <div class="desc">
+        <div>日</div>
+        <div>小时</div>
+        <div>分</div>
+        <div>秒</div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <div id="counter_2"></div>
+    <div class="desc">
+        <div>分</div>
+        <div>秒</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.countdown.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#counter').countdown({
+            image: 'images/digits.png',
+            startTime: '01:12:12:00'
+        });
+
+        $('#counter_2').countdown({
+            image: 'images/digits.png',
+            startTime: '00:10',
+            timerEnd: function(){ alert('end!'); },
+            format: 'mm:ss'
+        });
+    });
+</script>
+</body>
+</html>
