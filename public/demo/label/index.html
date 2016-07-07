@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="css/label.css" >
+    <style type="text/css">
+        html,body{margin: 0;padding: 0;}
+        button{cursor: pointer;width: 100px;height: 44px;}
+        .page{
+            position: absolute;
+            top:0;
+            height: 667px;
+            left: 50%;
+            border: 1px solid #aaa;
+            width: 375px;
+            margin-left: -187.5px;
+        }
+    </style>
+</head>
+<body>
+    <button id="btnLabel">标签</button>
+    <div class="page" id="page"></div>
+
+    <script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/public/js/common-plugins.js"></script>
+    <script>
+        +function () {
+            'use strict';
+
+            //获取个性标签数据
+            function getValues(url) {
+                return ["标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100),"标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000)];
+            }
+            //计算当前已选数目
+            function getChooseNumber() {
+                var $lis = $('.hp-label-box').find('.checked-label-list li');
+                if($lis.length > 0){
+                    return $lis.length;
+                }
+                return 0;
+            }
+            //换一换
+            function changeLabel(url) {
+                var values = getValues(url) || [];
+                var arr = [];
+                if(values.length > 0){
+                    $.each(values, function () {
+                        arr.push('<li>'+this+'</li>');
+                    });
+                    $('.hp-label-box .label-list').html(arr.join(''));
+                }
+            }
+            //确定
+            function confirmHandle(required, cb) {
+                var $box = $('.hp-label-box');
+                var $checkedList = $box.find('.checked-label-list');
+                var list = [];
+                $checkedList.find('li').each(function () {
+                    list.push($(this).text())
+                });
+                if(required && list.length === 0){
+                    alert('至少选择一个标签');
+                    return false;
+                }
+
+                cb(list);
+            }
+            //选择label
+            function labelClickHandle() {
+                var $box = $('.hp-label-box');
+                var $list = $box.find('.label-list');
+                var $checkedList = $box.find('.checked-label-list');
+                $(this).addClass('checked').attr('data-index',$(this).index()).attr('data-text', $(this).text());
+                $checkedList.append($(this).clone().append('<a class="remove">&times;</a>'));
+
+                var clickH = function () {
+                    var $li = $(this).closest('li');
+                    var index = $li.attr('data-index');
+                    var $labelLi = $list.find('li').eq(index);
+                    if($labelLi.text() == $li.attr('data-text')){
+                        $labelLi.removeClass('checked');
+                    }
+                    //remove
+                    $li.remove();
+                };
+                $checkedList.find('li .remove').off('click').on('click', clickH);
+            }
+            //显示
+            function showLabelBox(options){
+                options = $.extend({
+                    required:true, //是否必选
+                    title: '个性标签',
+                    maxChoose: 3,  //最多选择标签数
+                    parentDom:'',
+                    url:'',
+                    callback:function () {}
+                },options || {});
+
+                var defaultValues = getValues(options.url);
+
+                var arr = [];
+                arr.push('<div class="hp-label-box">');
+                arr.push('      <div class="hp-label">');
+                arr.push('          <div class="hp-label-header">');
+                arr.push('              <h3>'+options.title+'</h3>');
+                arr.push('              <p>选择您的标签，最多选择'+options.maxChoose+'个</p>');
+                arr.push('          </div>');
+                arr.push('          <div class="hp-label-body">');
+                arr.push('              <div class="hlb-top">');
+                arr.push('                  <ul class="checked-label-list">');
+
+                arr.push('                  </ul>');
+                arr.push('              </div>');
+                arr.push('              <div class="hlb-bottom">');
+                arr.push('                  <ul class="label-list">');
+                $.each(defaultValues, function () {
+                    arr.push('                  <li>'+this+'</li>');
+                });
+                arr.push('                  </ul>');
+                arr.push('              </div>');
+                arr.push('          </div>');
+                arr.push('          <div class="hp-label-footer">');
+                arr.push('              <a class="btn-change">换一换</a>');
+                arr.push('          </div>');
+                arr.push('      </div>');
+                arr.push('<a class="btn-confirm"></a>');
+                arr.push('</div>');
+
+                $(options.parentDom).html(arr.join(''));
+
+                var $box = $('.hp-label-box');
+                //change btn
+                $box.find('.btn-change').on('click', function () {
+                    changeLabel.call(null,options.url)
+                });
+                //confirm btn
+                $box.find('.btn-confirm').on('click', function () {
+                    confirmHandle.call(null, options.required, options.callback);
+                });
+                //label click
+                $box.find('.label-list li').on('click', function () {
+                    if(getChooseNumber() >= options.maxChoose){
+                        alert('最多只能选择'+options.maxChoose+'个');
+                    }else{
+                        labelClickHandle.call(this);
+                    }
+                })
+            }
+            function label(options) {
+                var self = this;
+
+
+                $(this).off('click').on('click',function () {
+                    showLabelBox.call(self, options);
+                });
+            }
+
+            $.fn.label = label;
+        }();
+
+        $(function () {
+            $("#btnLabel").label({
+                parentDom:'#page',
+                url:'',
+                callback:function (list) {
+                    console.log(list);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

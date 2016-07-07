@@ -1,0 +1,123 @@
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.hp-label-box {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+.hp-label-box .hp-label {
+  box-sizing: border-box;
+  width: 96%;
+  margin-left: 2%;
+  margin-top: 100px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+.hp-label-box .hp-label .hp-label-header {
+  margin-top: 20px;
+}
+.hp-label-box .hp-label .hp-label-header h3,
+.hp-label-box .hp-label .hp-label-header p {
+  margin: 0;
+  text-align: center;
+}
+.hp-label-box .hp-label .hp-label-header h3 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #222;
+}
+.hp-label-box .hp-label .hp-label-header p {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 6px;
+}
+.hp-label-box .hp-label .hp-label-body ul li {
+  position: relative;
+  float: left;
+  margin-left: 16px;
+  border-radius: 13px;
+  border: 1px solid #ccc;
+  font-size: 12px;
+  padding: 8px 20px;
+  margin-top: 16px;
+  color: #ccc;
+  cursor: pointer;
+}
+.hp-label-box .hp-label .hp-label-body ul li.checked {
+  border-color: #009df5;
+  color: #009DF5;
+}
+.hp-label-box .hp-label .hp-label-body ul li .remove {
+  position: absolute;
+  top: -2px;
+  right: -6px;
+  background: #fff;
+  color: #009DF5;
+  width: 16px;
+  height: 16px;
+  font-size: .6rem;
+  line-height: 16px;
+  cursor: pointer;
+}
+.hp-label-box .hp-label .hp-label-body ul:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.hp-label-box .hp-label .hp-label-body .hlb-top {
+  margin-top: 11px;
+  padding: 8px 8px 0;
+}
+.hp-label-box .hp-label .hp-label-body .hlb-top:after {
+  content: '';
+  display: block;
+  height: 0;
+  border: 1px dotted #eee;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+.hp-label-box .hp-label .hp-label-body .hlb-bottom {
+  padding: 0 8px 8px;
+}
+.hp-label-box .hp-label .hp-label-footer {
+  margin-top: 29px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.hp-label-box .hp-label .hp-label-footer .btn-change {
+  cursor: pointer;
+  color: #009DF5;
+  font-size: 12px;
+  padding: 5px 15px;
+}
+.hp-label-box .btn-confirm {
+  position: relative;
+  display: block;
+  margin: 32px auto 0;
+  width: 44px;
+  height: 44px;
+  background: #fff;
+  border-radius: 50%;
+}
+.hp-label-box .btn-confirm:after {
+  position: absolute;
+  content: '';
+  width: 18px;
+  height: 10px;
+  top: 11px;
+  left: 12px;
+  border-left: 3px solid #666;
+  border-bottom: 3px solid #666;
+  transform: rotate(-45deg);
+}
