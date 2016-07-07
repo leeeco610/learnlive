@@ -32,6 +32,9 @@
         +function () {
             'use strict';
 
+            //参数
+            var options = {};
+
             //获取个性标签数据
             function getValues(url) {
                 return ["标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100),"标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000)];
@@ -48,12 +51,20 @@
             function changeLabel(url) {
                 var values = getValues(url) || [];
                 var arr = [];
+                var $list = $('.hp-label-box .label-list');
                 if(values.length > 0){
                     $.each(values, function () {
                         arr.push('<li>'+this+'</li>');
                     });
-                    $('.hp-label-box .label-list').html(arr.join(''));
+                    $list.html(arr.join(''));
                 }
+                $list.find('li').on('click', function () {
+                    if(getChooseNumber() >= options.maxChoose){
+                        alert('最多只能选择'+options.maxChoose+'个');
+                    }else{
+                        labelClickHandle.call(this);
+                    }
+                })
             }
             //确定
             function confirmHandle(required, cb) {
@@ -91,7 +102,7 @@
                 $checkedList.find('li .remove').off('click').on('click', clickH);
             }
             //显示
-            function showLabelBox(options){
+            function showLabelBox(opt){
                 options = $.extend({
                     required:true, //是否必选
                     title: '个性标签',
@@ -99,7 +110,7 @@
                     parentDom:'',
                     url:'',
                     callback:function () {}
-                },options || {});
+                },opt || {});
 
                 var defaultValues = getValues(options.url);
 
@@ -144,16 +155,27 @@
                 });
                 //label click
                 $box.find('.label-list li').on('click', function () {
-                    if(getChooseNumber() >= options.maxChoose){
-                        alert('最多只能选择'+options.maxChoose+'个');
+                    if($(this).hasClass('checked')){
+                        var $box = $('.hp-label-box');
+                        var $checkedList = $box.find('.checked-label-list');
+                        var text = $(this).text();
+                        $checkedList.find('li').each(function () {
+                            if($(this).attr('data-text') == text){
+                                $(this).remove();
+                            }
+                        });
+                        $(this).removeClass('checked');
                     }else{
-                        labelClickHandle.call(this);
+                        if(getChooseNumber() >= options.maxChoose){
+                            alert('最多只能选择'+options.maxChoose+'个');
+                        }else{
+                            labelClickHandle.call(this);
+                        }
                     }
                 })
             }
             function label(options) {
                 var self = this;
-
 
                 $(this).off('click').on('click',function () {
                     showLabelBox.call(self, options);
