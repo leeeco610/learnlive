@@ -896,22 +896,22 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         return ["标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100),"标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000)];
     }
     //计算当前已选数目
-    function getChooseNumber() {
-        var $lis = $('#'+options.id).find('.checked-label-list li');
+    function getChooseNumber(id) {
+        var $lis = $('#'+id).find('.checked-label-list li');
         if($lis.length > 0){
             return $lis.length;
         }
         return 0;
     }
     //关闭
-    function close() {
-        var $box = $('#'+options.id);
+    function close(id) {
+        var $box = $('#'+id);
         $box.length > 0 && $box.removeClass("zoomIn").addClass("zoomOut");
         $.unlockScreen();
     }
     //换一换
-    function changeLabel(url) {
-        var $box = $('#'+options.id);
+    function changeLabel(url, id) {
+        var $box = $('#'+id);
         var values = getValues(url) || [];
         var arr = [];
         var $list = $box.find('.label-list');
@@ -922,33 +922,33 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             $list.html(arr.join(''));
         }
         $list.find('li').on('click', function () {
-            if(getChooseNumber() >= options.maxChoose){
-                options.showMessageFunc('最多只能选择'+options.maxChoose+'个');
+            if(getChooseNumber(id) >= options[id].maxChoose){
+                options[id].showMessageFunc('最多只能选择'+options[id].maxChoose+'个');
             }else{
-                labelClickHandle.call(this);
+                labelClickHandle.call(this, id);
             }
         })
     }
     //确定
-    function confirmHandle(required, cb) {
-        var $box = $('#'+options.id);
+    function confirmHandle(id, required, cb) {
+        var $box = $('#'+id);
         var $checkedList = $box.find('.checked-label-list');
         var list = [];
         $checkedList.find('li').each(function () {
             list.push($(this).attr('data-text'))
         });
         if(required && list.length === 0){
-            options.showMessageFunc('至少选择一个标签');
+            options[id].showMessageFunc('至少选择一个标签');
             return false;
         }
         //回调
         cb(list);
         //关闭
-        close();
+        close(id);
     }
     //选择label
-    function labelClickHandle() {
-        var $box = $('#'+options.id);
+    function labelClickHandle(id) {
+        var $box = $('#'+id);
         var $list = $box.find('.label-list');
         var $checkedList = $box.find('.checked-label-list');
         $(this).addClass('checked').attr('data-index',$(this).index()).attr('data-text', $(this).text());
@@ -967,35 +967,20 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         $checkedList.find('li .remove').off('click').on('click', clickH);
     }
     //显示
-    function showLabelBox(opt){
-        options = $.extend({
-            showMessageFunc:function (msg) {  //提示消息的方法
-                alert(msg);
-            },
-            id:'hpLabelBox',
-            defaultCheckedValues:[],
-            required:true, //是否必选
-            title: '个性标签',
-            subtitle:'选择您的标签',
-            maxChoose: 3,  //最多选择标签数
-            parentDom:'body',
-            url:'',
-            callback:function () {}
-        },opt || {});
-
-        var defaultValues = getValues(options.url);
+    function showLabelBox(id){
+        var defaultValues = getValues(options[id].url);
 
         var arr = [];
-        arr.push('<div class="hp-label-box animated zoomIn" id="'+options.id+'">');
+        arr.push('<div class="hp-label-box animated zoomIn" id="'+id+'">');
         arr.push('      <div class="hp-label">');
         arr.push('          <div class="hp-label-header">');
-        arr.push('              <h3>'+options.title+'</h3>');
-        arr.push('              <p>'+options.subtitle+'，最多选择'+options.maxChoose+'个</p>');
+        arr.push('              <h3>'+options[id].title+'</h3>');
+        arr.push('              <p>'+options[id].subtitle+'，最多选择'+options[id].maxChoose+'个</p>');
         arr.push('          </div>');
         arr.push('          <div class="hp-label-body">');
         arr.push('              <div class="hlb-top">');
         arr.push('                  <ul class="checked-label-list">');
-        $.each(options.defaultCheckedValues, function () {
+        $.each(options[id].defaultCheckedValues, function () {
             arr.push('                  <li class="checked" data-text="'+this+'">'+this+'<a class="remove">&times;</a></li>');
         });
         arr.push('                  </ul>');
@@ -1015,18 +1000,18 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('<a class="btn-confirm"></a>');
         arr.push('</div>');
 
-        $(options.parentDom).prepend(arr.join(''));
+        $(options[id].parentDom).prepend(arr.join(''));
 
-        var $box = $('#'+options.id);
+        var $box = $('#'+id);
         var $list = $box.find('.label-list');
         var $checkedList = $box.find('.checked-label-list');
         //change btn
         $box.find('.btn-change').on('click', function () {
-            changeLabel.call(null,options.url)
+            changeLabel.call(null,options[id].url, id)
         });
         //confirm btn
         $box.find('.btn-confirm').on('click', function () {
-            confirmHandle.call(null, options.required, options.callback);
+            confirmHandle.call(null, id,options[id].required, options[id].callback);
         });
         //label click
         $box.find('.label-list li').on('click', function () {
@@ -1039,10 +1024,10 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
                 });
                 $(this).removeClass('checked');
             }else{
-                if(getChooseNumber() >= options.maxChoose){
-                    options.showMessageFunc('最多只能选择'+options.maxChoose+'个');
+                if(getChooseNumber(id) >= options[id].maxChoose){
+                    options[id].showMessageFunc('最多只能选择'+options[id].maxChoose+'个');
                 }else{
-                    labelClickHandle.call(this);
+                    labelClickHandle.call(this,id);
                 }
             }
         });
@@ -1059,20 +1044,36 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         };
         $checkedList.find('li .remove').off('click').on('click', clickH);
     }
-    function label(options) {
-        if(typeof options.id != "string"){
+    function label(opt) {
+        if(typeof opt.id != "string"){
             throw new Error('Parameter ID is required');
         }
 
+        $(this).attr('data-id',opt.id);
+        options[opt.id] = $.extend({
+            showMessageFunc:function (msg) {  //提示消息的方法
+                alert(msg);
+            },
+            id:'hpLabelBox',
+            defaultCheckedValues:[],
+            required:true, //是否必选
+            title: '个性标签',
+            subtitle:'选择您的标签',
+            maxChoose: 3,  //最多选择标签数
+            parentDom:'body',
+            url:'',
+            callback:function () {}
+        },opt || {});
         var self = this;
 
         $(this).off('click').on('click',function () {
-            var $box = $('#'+options.id);
+            var curId = $(this).attr('data-id');
+            var $box = $('#'+curId);
             $.lockScreen();
             if($box.length > 0){
                 $box.removeClass('zoomOut').addClass('zoomIn');
             }else {
-                showLabelBox.call(self, options)
+                showLabelBox.call(self, curId)
             }
         });
     }
