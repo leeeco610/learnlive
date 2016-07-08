@@ -974,6 +974,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             defaultCheckedValues:[],
             required:true, //是否必选
             title: '个性标签',
+            subtitle:'选择您的标签',
             maxChoose: 3,  //最多选择标签数
             parentDom:'body',
             url:'',
@@ -987,7 +988,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('      <div class="hp-label">');
         arr.push('          <div class="hp-label-header">');
         arr.push('              <h3>'+options.title+'</h3>');
-        arr.push('              <p>选择您的标签，最多选择'+options.maxChoose+'个</p>');
+        arr.push('              <p>'+options.subtitle+'，最多选择'+options.maxChoose+'个</p>');
         arr.push('          </div>');
         arr.push('          <div class="hp-label-body">');
         arr.push('              <div class="hlb-top">');
