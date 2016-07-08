@@ -897,7 +897,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //计算当前已选数目
     function getChooseNumber() {
-        var $lis = $('.hp-label-box').find('.checked-label-list li');
+        var $lis = $('#'+options.id).find('.checked-label-list li');
         if($lis.length > 0){
             return $lis.length;
         }
@@ -905,15 +905,16 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //关闭
     function close() {
-        var $box = $('.hp-label-box');
+        var $box = $('#'+options.id);
         $box.length > 0 && $box.removeClass("zoomIn").addClass("zoomOut");
         $.unlockScreen();
     }
     //换一换
     function changeLabel(url) {
+        var $box = $('#'+options.id);
         var values = getValues(url) || [];
         var arr = [];
-        var $list = $('.hp-label-box .label-list');
+        var $list = $box.find('.label-list');
         if(values.length > 0){
             $.each(values, function () {
                 arr.push('<li>'+this+'</li>');
@@ -930,7 +931,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //确定
     function confirmHandle(required, cb) {
-        var $box = $('.hp-label-box');
+        var $box = $('#'+options.id);
         var $checkedList = $box.find('.checked-label-list');
         var list = [];
         $checkedList.find('li').each(function () {
@@ -947,7 +948,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //选择label
     function labelClickHandle() {
-        var $box = $('.hp-label-box');
+        var $box = $('#'+options.id);
         var $list = $box.find('.label-list');
         var $checkedList = $box.find('.checked-label-list');
         $(this).addClass('checked').attr('data-index',$(this).index()).attr('data-text', $(this).text());
@@ -971,6 +972,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             showMessageFunc:function (msg) {  //提示消息的方法
                 alert(msg);
             },
+            id:'hpLabelBox',
             defaultCheckedValues:[],
             required:true, //是否必选
             title: '个性标签',
@@ -984,7 +986,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var defaultValues = getValues(options.url);
 
         var arr = [];
-        arr.push('<div class="hp-label-box animated zoomIn">');
+        arr.push('<div class="hp-label-box animated zoomIn" id="'+options.id+'">');
         arr.push('      <div class="hp-label">');
         arr.push('          <div class="hp-label-header">');
         arr.push('              <h3>'+options.title+'</h3>');
@@ -1015,7 +1017,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
 
         $(options.parentDom).prepend(arr.join(''));
 
-        var $box = $('.hp-label-box');
+        var $box = $('#'+options.id);
         var $list = $box.find('.label-list');
         var $checkedList = $box.find('.checked-label-list');
         //change btn
@@ -1058,10 +1060,14 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         $checkedList.find('li .remove').off('click').on('click', clickH);
     }
     function label(options) {
+        if(typeof options.id != "string"){
+            throw new Error('Parameter ID is required');
+        }
+
         var self = this;
 
         $(this).off('click').on('click',function () {
-            var $box = $('.hp-label-box');
+            var $box = $('#'+options.id);
             $.lockScreen();
             if($box.length > 0){
                 $box.removeClass('zoomOut').addClass('zoomIn');
