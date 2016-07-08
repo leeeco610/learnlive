@@ -718,13 +718,14 @@ li {
 .hp-label-box .hp-label .hp-label-body ul li .remove {
   position: absolute;
   top: -2px;
-  right: -6px;
+  right: -5px;
   background: #fff;
   color: #009DF5;
   width: 16px;
   height: 16px;
   font-size: .6rem;
   line-height: 16px;
+  text-align: center;
   cursor: pointer;
 }
 .hp-label-box .hp-label .hp-label-body ul:after {
