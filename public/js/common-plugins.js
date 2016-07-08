@@ -1012,7 +1012,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('<a class="btn-confirm"></a>');
         arr.push('</div>');
 
-        $(options.parentDom).html(arr.join(''));
+        $(options.parentDom).prepend(arr.join(''));
 
         var $box = $('.hp-label-box');
         var $list = $box.find('.label-list');
