@@ -624,7 +624,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     if (typeof define === 'function' && define.amd) {
         define(['jquery'], factory);
     } else {
-        factory(jQuery);
+        factory($);
     }
 }(function ($) {
     var imageCrop = function(options, el){
@@ -750,7 +750,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         return obj;
     };
 
-    jQuery.fn.imageCrop = function(options){
+    $.fn.imageCrop = function(options){
         return new imageCrop(options, this);
     };
 
@@ -932,4 +932,4 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     $(document).on(input,'input[data-width="auto"]',inputHandle);
     $(document).on('keydown','input[data-width="auto"]',keydownHandle);
     $(document).on('keyup','input[data-width="auto"]',keyupHandle);
-}(jQuery);
+}($);

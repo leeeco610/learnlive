@@ -100,6 +100,7 @@ li {
   color: #009DF5;
   font-size: 12px;
   padding: 5px 15px;
+  -webkit-user-select: none;
 }
 .hp-label-box .btn-confirm {
   position: relative;
@@ -109,6 +110,7 @@ li {
   height: 44px;
   background: #fff;
   border-radius: 50%;
+  cursor: pointer;
 }
 .hp-label-box .btn-confirm:after {
   position: absolute;

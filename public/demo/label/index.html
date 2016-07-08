@@ -11,6 +11,7 @@
     <style type="text/css">
         html,body{margin: 0;padding: 0;}
         button{cursor: pointer;width: 100px;height: 44px;}
+        #result{margin-top: 50px;width: 200px;}
         .page{
             position: absolute;
             top:0;
@@ -24,9 +25,10 @@
 </head>
 <body>
     <button id="btnLabel">标签</button>
+    <div id="result"></div>
     <div class="page" id="page"></div>
 
-    <script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://libs.useso.com/js/zepto/1.1.3/zepto.min.js"></script>
     <script type="text/javascript" src="/public/js/common-plugins.js"></script>
     <script>
         +function () {
@@ -46,6 +48,11 @@
                     return $lis.length;
                 }
                 return 0;
+            }
+            //关闭
+            function close() {
+                var $box = $('.hp-label-box');
+                $box.length > 0 && $box.hide();
             }
             //换一换
             function changeLabel(url) {
@@ -72,14 +79,16 @@
                 var $checkedList = $box.find('.checked-label-list');
                 var list = [];
                 $checkedList.find('li').each(function () {
-                    list.push($(this).text())
+                    list.push($(this).attr('data-text'))
                 });
                 if(required && list.length === 0){
                     alert('至少选择一个标签');
                     return false;
                 }
-
+                //回调
                 cb(list);
+                //关闭
+                close();
             }
             //选择label
             function labelClickHandle() {
@@ -178,7 +187,8 @@
                 var self = this;
 
                 $(this).off('click').on('click',function () {
-                    showLabelBox.call(self, options);
+                    var $box = $('.hp-label-box');
+                    $box.length > 0 ? $box.show():showLabelBox.call(self, options);
                 });
             }
 
@@ -190,7 +200,7 @@
                 parentDom:'#page',
                 url:'',
                 callback:function (list) {
-                    console.log(list);
+                    $('#result').html(list.join(','));
                 }
             });
         });
