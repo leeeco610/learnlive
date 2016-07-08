@@ -675,7 +675,7 @@ li {
   margin-top: 100px;
   background: #fff;
   border-radius: 10px;
-  padding: 10px;
+  padding: 10px 0;
 }
 .hp-label-box .hp-label .hp-label-header {
   margin-top: 20px;
@@ -695,6 +695,9 @@ li {
   color: #aaa;
   margin-top: 6px;
 }
+.hp-label-box .hp-label .hp-label-body ul {
+  padding: 0 8px 16px;
+}
 .hp-label-box .hp-label .hp-label-body ul li {
   position: relative;
   float: left;
@@ -706,6 +709,7 @@ li {
   margin-top: 16px;
   color: #ccc;
   cursor: pointer;
+  -webkit-user-select: none;
 }
 .hp-label-box .hp-label .hp-label-body ul li.checked {
   border-color: #009df5;
@@ -730,7 +734,7 @@ li {
 }
 .hp-label-box .hp-label .hp-label-body .hlb-top {
   margin-top: 11px;
-  padding: 8px 8px 0;
+  padding: 8px 0 0;
 }
 .hp-label-box .hp-label .hp-label-body .hlb-top:after {
   content: '';
@@ -741,10 +745,10 @@ li {
   transform: scaleY(0.5);
 }
 .hp-label-box .hp-label .hp-label-body .hlb-bottom {
-  padding: 0 8px 8px;
+  padding: 0 0 8px;
 }
 .hp-label-box .hp-label .hp-label-footer {
-  margin-top: 29px;
+  margin-top: 13px;
   margin-bottom: 5px;
   text-align: center;
 }

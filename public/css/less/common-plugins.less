@@ -573,7 +573,7 @@ ul,li{
     margin-top: 100px;
     background: #fff;
     border-radius: 10px;
-    padding: 10px;
+    padding: 10px 0;
     .hp-label-header{
       margin-top: 20px;
       h3,p{
@@ -593,6 +593,7 @@ ul,li{
     }
     .hp-label-body{
       ul{
+        padding: 0 8px 16px;
         li{
           position: relative;
           float: left;
@@ -604,6 +605,7 @@ ul,li{
           margin-top: 16px;
           color: #ccc;
           cursor: pointer;
+          -webkit-user-select: none;
           &.checked{
             border-color: #009df5;
             color: #009DF5;
@@ -629,7 +631,7 @@ ul,li{
       }
       .hlb-top{
         margin-top: 11px;
-        padding: 8px 8px 0;
+        padding: 8px 0 0;
         &:after{
           content: '';
           display: block;
@@ -640,11 +642,11 @@ ul,li{
         }
       }
       .hlb-bottom{
-        padding: 0 8px 8px;
+        padding: 0 0 8px;
       }
     }
     .hp-label-footer{
-      margin-top: 29px;
+      margin-top: 13px;
       margin-bottom: 5px;
       text-align: center;
       .btn-change{

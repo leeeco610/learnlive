@@ -957,7 +957,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             var $li = $(this).closest('li');
             var index = $li.attr('data-index');
             var $labelLi = $list.find('li').eq(index);
-            if($labelLi.text() == $li.attr('data-text')){
+            if($labelLi.length != 0 && $labelLi.text() == $li.attr('data-text')){
                 $labelLi.removeClass('checked');
             }
             //remove
@@ -971,10 +971,11 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             showMessageFunc:function (msg) {  //提示消息的方法
                 alert(msg);
             },
+            defaultCheckedValues:[],
             required:true, //是否必选
             title: '个性标签',
             maxChoose: 3,  //最多选择标签数
-            parentDom:'',
+            parentDom:'body',
             url:'',
             callback:function () {}
         },opt || {});
@@ -991,7 +992,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('          <div class="hp-label-body">');
         arr.push('              <div class="hlb-top">');
         arr.push('                  <ul class="checked-label-list">');
-
+        $.each(options.defaultCheckedValues, function () {
+            arr.push('                  <li class="checked" data-text="'+this+'">'+this+'<a class="remove">&times;</a></li>');
+        });
         arr.push('                  </ul>');
         arr.push('              </div>');
         arr.push('              <div class="hlb-bottom">');
@@ -1012,6 +1015,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         $(options.parentDom).html(arr.join(''));
 
         var $box = $('.hp-label-box');
+        var $list = $box.find('.label-list');
+        var $checkedList = $box.find('.checked-label-list');
         //change btn
         $box.find('.btn-change').on('click', function () {
             changeLabel.call(null,options.url)
@@ -1023,8 +1028,6 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         //label click
         $box.find('.label-list li').on('click', function () {
             if($(this).hasClass('checked')){
-                var $box = $('.hp-label-box');
-                var $checkedList = $box.find('.checked-label-list');
                 var text = $(this).text();
                 $checkedList.find('li').each(function () {
                     if($(this).attr('data-text') == text){
@@ -1039,7 +1042,19 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
                     labelClickHandle.call(this);
                 }
             }
-        })
+        });
+        //checked label remove btn click
+        var clickH = function () {
+            var $li = $(this).closest('li');
+            var index = $li.attr('data-index');
+            var $labelLi = $list.find('li').eq(index);
+            if($labelLi.length != 0 && $labelLi.text() == $li.attr('data-text')){
+                $labelLi.removeClass('checked');
+            }
+            //remove
+            $li.remove();
+        };
+        $checkedList.find('li .remove').off('click').on('click', clickH);
     }
     function label(options) {
         var self = this;
