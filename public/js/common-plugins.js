@@ -922,7 +922,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         }
         $list.find('li').on('click', function () {
             if(getChooseNumber() >= options.maxChoose){
-                alert('最多只能选择'+options.maxChoose+'个');
+                options.showMessageFunc('最多只能选择'+options.maxChoose+'个');
             }else{
                 labelClickHandle.call(this);
             }
@@ -937,7 +937,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             list.push($(this).attr('data-text'))
         });
         if(required && list.length === 0){
-            alert('至少选择一个标签');
+            options.showMessageFunc('至少选择一个标签');
             return false;
         }
         //回调
@@ -968,6 +968,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     //显示
     function showLabelBox(opt){
         options = $.extend({
+            showMessageFunc:function (msg) {  //提示消息的方法
+                alert(msg);
+            },
             required:true, //是否必选
             title: '个性标签',
             maxChoose: 3,  //最多选择标签数
@@ -1031,7 +1034,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
                 $(this).removeClass('checked');
             }else{
                 if(getChooseNumber() >= options.maxChoose){
-                    alert('最多只能选择'+options.maxChoose+'个');
+                    options.showMessageFunc('最多只能选择'+options.maxChoose+'个');
                 }else{
                     labelClickHandle.call(this);
                 }
