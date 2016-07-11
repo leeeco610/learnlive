@@ -175,7 +175,7 @@ jQuery.fn.flipCountDown = jQuery.fn.flipcountdown = function( _options ){
 					.trigger('xdinit.xdsoft');
 			});
 			$box.append($flipcountdown);
-		};	
+		};
 	return this.each(function(){
 		var $box = $(this);
 		if( !$box.data('setOptions') ){
