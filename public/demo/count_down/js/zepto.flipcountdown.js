@@ -47,7 +47,6 @@
                 showMinute: true,
                 showSecond: true,
                 am: false,
-
                 tzoneOffset: 0,
                 speedFlip: 60,
                 period: 1000,
@@ -55,7 +54,12 @@
                     return new Date();
                 },
                 autoUpdate: true,
-                size: 'md'
+                size: 'md',
+
+                beforeDateTime:false,
+                prettyPrint :function( chars ){
+                    return (chars instanceof Array)?chars.join(' '):chars;
+                }
             },
 
             sizes = {
@@ -159,38 +163,38 @@
                     counter = 0,
 
                     _calcMoment = function () {
-                        var value = '1', chars = [];
-                        if (options.tick)
-                            value = (options.tick instanceof Function) ? options.tick.call($box, counter) : options.tick;
+                        var value = '1',chars = [];
+                        if(options.tick)
+                            value = options.prettyPrint.call($box,(options.tick instanceof Function)?options.tick.call($box,counter):options.tick);
 
-                        if (typeof value !== 'undefined') {
-                            switch (value.constructor) {
+                        if( typeof value!=='undefined' ){
+                            switch( value.constructor ){
                                 case Date:
-                                    var h = (value.getHours() + options.tzoneOffset) % (options.am ? 12 : 24);
+                                    var h = (value.getHours()+options.tzoneOffset)%(options.am?12:24);
 
-                                    if (options.showHour) {
-                                        chars.push(parseInt(h / 10));
-                                        chars.push(h % 10);
+                                    if( options.showHour ){
+                                        chars.push(parseInt(h/10));
+                                        chars.push(h%10);
                                     }
 
-                                    if (options.showHour && (options.showMinute || options.showSecond))
+                                    if( options.showHour && (options.showMinute || options.showSecond) )
                                         chars.push(':');
 
-                                    if (options.showMinute) {
-                                        chars.push(parseInt(value.getMinutes() / 10));
+                                    if( options.showMinute ){
+                                        chars.push(parseInt(value.getMinutes()/10));
                                         chars.push(value.getMinutes() % 10);
                                     }
 
-                                    if (options.showMinute && options.showSecond)
+                                    if( options.showMinute && options.showSecond )
                                         chars.push(':');
 
-                                    if (options.showSecond) {
-                                        chars.push(parseInt(value.getSeconds() / 10));
+                                    if( options.showSecond ){
+                                        chars.push(parseInt(value.getSeconds()/10));
                                         chars.push(value.getSeconds() % 10);
                                     }
                                     break;
                                 case String:
-                                    chars = value.replace(/[^0-9\:\.\s]/g, '').split('');
+                                    chars = value.replace(/[^0-9\:\.\s]/g,'').split('');
                                     break;
                                 case Number:
                                     chars = value.toString().split('');
@@ -209,9 +213,31 @@
                 };
 
                 $box.dataCache('setOptions', function (_options) {
-                    options = $.extend({}, options, _options);
-                    if (!sizes[options.size])
-                        options.size = 'lg';
+                    options = $.extend(true,{},options,_options);
+                    if( !sizes[options.size] )
+                        options.size = defaulOptions.size;
+
+                    if( options.beforeDateTime && !_options.tick ){
+                        if( typeof(options.beforeDateTime) == 'string' )
+                            options.beforeDateTime = Math.round((new Date(options.beforeDateTime)).getTime()/1000);
+                        else{
+                            if ( Object.prototype.toString.call(options.beforeDateTime) !== "[object Date]" )
+                                options.beforeDateTime = Math.round((new Date()).getTime()/1000)+365*24*60;
+                        }
+                        var nol = function(h){
+                            return h>9?h:'0'+h;
+                        };
+
+                        options.tick = function(){
+                            var	range  	=  Math.max(0,options.beforeDateTime-Math.round((new Date()).getTime()/1000)),
+                                secday = 86400, sechour = 3600,
+                                days 	= parseInt(range/secday),
+                                hours	= parseInt((range%secday)/sechour),
+                                min		= parseInt(((range%secday)%sechour)/60),
+                                sec		= ((range%secday)%sechour)%60;
+                            return [nol(days),nol(hours),nol(min),nol(sec)];
+                        }
+                    }
                     $flipcountdown
                         .addClass('xdsoft_size_' + options.size);
                     xdsoft();

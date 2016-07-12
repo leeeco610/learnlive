@@ -27,9 +27,8 @@
             $('#retroclockbox3').flipcountdown({tzoneOffset:3,showSecond:false});
             $('#retroclockbox4').flipcountdown({am:true});
             $('#retroclockbox5').flipcountdown({speedFlip:50});
-            $('#retroclockbox6').flipcountdown({tick:function(){
-                return new Date('5/10/2012 12:34:23');
-            }});
+            var dt = new Date();
+            $('#retroclockbox6').flipcountdown({beforeDateTime:'8/01/2016' + ' 00:00:01'});
         })
     </script>
 </head>
