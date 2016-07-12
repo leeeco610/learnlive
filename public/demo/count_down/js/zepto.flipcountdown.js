@@ -1,5 +1,8 @@
 /**
+ * Zepto count down plugin
  * Created by lihaipeng on 16/7/11.
+ * This plugin base on jquery.flipcountdown.js
+ * Dual licensed under the MIT and GPL licenses.
  */
 (function ($) {
     //重新实现data方法命令为dataCache
