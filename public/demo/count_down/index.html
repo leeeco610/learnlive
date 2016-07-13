@@ -8,6 +8,21 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="css/flipcountdown.css" />
+    <style>
+        #retroclockbox6 .xdsoft_digit:not(.xdsoft_space){
+            background-color: #333;
+            border-radius: 6px;
+        }
+        #retroclockbox6 .xdsoft_flipcountdown.xdsoft_size_sm .xdsoft_digit{
+            height: 32px;
+            border: 1px solid #fff;
+        }
+        #retroclockbox6 .xdsoft_flipcountdown.xdsoft_size_sm .xdsoft_digit.xdsoft_space,
+        #retroclockbox6 .xdsoft_flipcountdown.xdsoft_size_sm .xdsoft_digit.xdsoft_separator,
+        #retroclockbox6 .xdsoft_flipcountdown.xdsoft_size_sm .xdsoft_digit.xdsoft_dot{
+            background-position: -7px -961px;
+        }
+    </style>
     <!--<script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>-->
     <!--<script type="text/javascript" src="js/jquery.flipcountdown.js"></script>-->
 
@@ -28,7 +43,7 @@
             $('#retroclockbox4').flipcountdown({am:true});
             $('#retroclockbox5').flipcountdown({speedFlip:50});
             var dt = new Date();
-            $('#retroclockbox6').flipcountdown({beforeDateTime:'8/01/2016' + ' 00:00:01'});
+            $('#retroclockbox6').flipcountdown({beforeDateTime:'8/01/2020' + ' 00:00:01', size:'sm'});
         })
     </script>
 </head>
@@ -151,6 +166,7 @@
 	}});
 })</pre>
     <div id="retroclockbox6"></div>
+    <div style="height: 200px;"></div>
     <style>
         body{margin:0px; padding:0px;}
         #main{margin:0px auto; padding:0px; width:900px;position:relative;}

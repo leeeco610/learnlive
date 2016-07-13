@@ -1,84 +1,135 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no">
-    <style type="text/css">
-        body{ font:normal 12px/24px '微软雅黑',tahoma;}
-        .wrapper {
-            margin:0px auto;
-            padding:0px 20px 20px 20px;
-            border:1px solid #CCC;
-            width:665px;
-            font-size:12px;
-        }
-        .autosize {
-            font-size:0;
-            background: #000;
-            display: table;
+    <meta charset="utf-8"/>
+    <title>&laquo;TimeTo&raquo; jQuery plug-in example</title>
+
+    <!--[if lt IE 9]>
+    <script>
+        document.createElement('figure');
+        document.createElement('figcaption');
+    </script>
+    <![endif]-->
+    <link href="css/timeTo.css" type="text/css" rel="stylesheet"/>
+
+    <style>
+        pre {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px #DDD solid;
         }
     </style>
 </head>
 <body>
-<!-- 代码 开始 -->
-<div class="wrapper">
-    <p>倒计时</p>
-    <div id="led0" class="autosize" style="background:#333"></div>
-    <p>显示随机数</p>
-    <div id="led1" class="autosize" style="background:#333"></div>
-    <p>显示时间 (格式 ― hh:mm)</p>
-    <div id="led2" class="autosize"></div>
-    <p>显示时间 (格式 ― hh:mm:ss)</p>
-    <div id="led3" class="autosize"></div>
+<h1>&laquo;TimeTo&raquo; jQuery plugin demo</h1>
 
-</div>
-<script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="js/lrtk.js"></script>
-<script type="text/javascript" src="js/jquery.uled.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        var l0 = new uLED({
-            id : "led0",//对应div的id
-            type : "countdown",//显示类型，可取值 "countdown", "random" , "time".
-            format : "ddd:hh:mm:ss",//数字显示格式
-            color : "#eee",//数字颜色
-            bgcolor : "#000",//背景颜色
-            size : 5,//led点大小
-            rounded : 1//led点圆角大小
+<h2>Countdown timer</h2>
+
+<h3>Set delay in seconds</h3>
+    <pre>
+$('#countdown').timeTo(120, function(){ alert('Countdown finished'); }); </pre>
+
+<div id="countdown-1"></div>
+<p><button id="reset-1" type="button">Reset</button></p>
+
+<div class="clock"></div>
+<div class="clock"></div>
+
+<h3>Hide hours</h3>
+    <pre>
+$('#countdown').timeTo({
+    seconds: 100,
+    displayHours: false
+}); </pre>
+
+<div id="countdown-11"></div>
+
+
+<h3>Set delay to specyfied datetime</h3>
+    <pre>
+$('#countdown').timeTo(new Date('<span id="date-str"></span>')); </pre>
+
+<div id="countdown-2"></div>
+
+<h3>Set captions and dark theme</h1>
+    <pre>
+$('#countdown').timeTo({
+    timeTo: new Date(new Date('<span id="date2-str"></span>')),
+    displayDays: 2,
+    theme: "black",
+    displayCaptions: true,
+    fontSize: 48,
+    captionSize: 14
+}); </pre>
+
+    <div id="countdown-3"></div>
+
+    <p>&nbsp;</p>
+    <h2>Digital clock</h2>
+    <pre>
+$('#clock-1').timeTo();</pre>
+
+    <div id="clock-1"></div>
+
+    <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <script src="js/zepto.time-to.js"></script>
+    <script>
+        /**
+         * Set timer countdown in seconds with callback
+         */
+        $('#countdown-1').timeTo(120, function(){
+            alert('Countdown finished');
         });
-        var l1 = new uLED({
-            id : "led1",
-            type : "random",
-            length : 7,//随机数长度
-            color : "#af0",
-            bgcolor : "#101a10",
-            size : 10,
-            rounded : 6
+        $('#reset-1').click(function() {
+            $('#countdown-1').timeTo('reset');
         });
-        var l2 = new uLED({
-            id : "led2",
-            type : "time",
-            format : "hh:mm",
-            color : "#f0a",
-            bgcolor : "#222",
-            size : 22,
-            rounded : 4
+
+        /**
+         * Hide hours
+         */
+        $('#countdown-11').timeTo({
+            seconds: 100,
+            displayHours: false
         });
-        var l3 = new uLED({
-            id : "led3",
-            type : "time",
-            format : "hh:mm:ss",
-            hourformat : 12,//小时显示格式，可取值 "12" , "24"
-            color : "#fa0",
-            bgcolor : "#222",
-            size : 12,
-            rounded : 0
+
+        var date = getRelativeDate(20);
+
+        document.getElementById('date-str').innerHTML = date.toString();
+
+        /**
+         * Set timer countdown to specyfied date
+         */
+        $('#countdown-2').timeTo(date);
+
+        date = getRelativeDate(7, 9);
+        document.getElementById('date2-str').innerHTML = date.toString();
+
+        /**
+         * Set theme and captions
+         */
+        $('#countdown-3').timeTo({
+            timeTo: date,
+            displayDays: 2,
+            theme: "black",
+            displayCaptions: true,
+            fontSize: 48,
+            captionSize: 14
         });
-    });
-</script>
+
+        /**
+         * Simple digital clock
+         */
+        $('#clock-1').timeTo();
+
+        function getRelativeDate(days, hours, minutes){
+            var date = new Date((new Date()).getTime() + 60000 /* milisec */ * 60 /* minutes */ * 24 /* hours */ * days /* days */);
+
+            date.setHours(hours || 0);
+            date.setMinutes(minutes || 0);
+            date.setSeconds(0);
+
+            return date;
+        }
+    </script>
 </body>
 </html>

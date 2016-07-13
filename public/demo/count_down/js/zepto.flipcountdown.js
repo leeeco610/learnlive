@@ -1,6 +1,6 @@
 /**
  * Zepto count down plugin
- * Created by lihaipeng on 16/7/11.
+ * Created by Leeeco on 16/7/11.
  * This plugin base on jquery.flipcountdown.js
  * Dual licensed under the MIT and GPL licenses.
  */
@@ -68,7 +68,7 @@
             sizes = {
                 lg: 77,
                 md: 52,
-                sm: 35,
+                sm: 16,
                 xs: 24
             },
 

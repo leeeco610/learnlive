@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style type="text/css">
+        body{ font:normal 12px/24px '微软雅黑',tahoma;}
+        .wrapper {
+            margin:0px auto;
+            padding:0px 20px 20px 20px;
+            border:1px solid #CCC;
+            width:665px;
+            font-size:12px;
+        }
+        .autosize {
+            font-size:0;
+            background: #000;
+            display: table;
+        }
+    </style>
+</head>
+<body>
+<!-- 代码 开始 -->
+<div class="wrapper">
+    <p>倒计时</p>
+    <div id="led0" class="autosize" style="background:#333"></div>
+    <p>显示随机数</p>
+    <div id="led1" class="autosize" style="background:#333"></div>
+    <p>显示时间 (格式 ― hh:mm)</p>
+    <div id="led2" class="autosize"></div>
+    <p>显示时间 (格式 ― hh:mm:ss)</p>
+    <div id="led3" class="autosize"></div>
+
+</div>
+<script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/lrtk.js"></script>
+<script type="text/javascript" src="js/jquery.uled.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var l0 = new uLED({
+            id : "led0",//对应div的id
+            type : "countdown",//显示类型，可取值 "countdown", "random" , "time".
+            format : "ddd:hh:mm:ss",//数字显示格式
+            color : "#eee",//数字颜色
+            bgcolor : "#000",//背景颜色
+            size : 5,//led点大小
+            rounded : 1//led点圆角大小
+        });
+        var l1 = new uLED({
+            id : "led1",
+            type : "random",
+            length : 7,//随机数长度
+            color : "#af0",
+            bgcolor : "#101a10",
+            size : 10,
+            rounded : 6
+        });
+        var l2 = new uLED({
+            id : "led2",
+            type : "time",
+            format : "hh:mm",
+            color : "#f0a",
+            bgcolor : "#222",
+            size : 22,
+            rounded : 4
+        });
+        var l3 = new uLED({
+            id : "led3",
+            type : "time",
+            format : "hh:mm:ss",
+            hourformat : 12,//小时显示格式，可取值 "12" , "24"
+            color : "#fa0",
+            bgcolor : "#222",
+            size : 12,
+            rounded : 0
+        });
+    });
+</script>
+</body>
+</html>
