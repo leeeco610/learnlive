@@ -8,14 +8,14 @@
 (function(factory) {
     if(typeof exports === 'object') {
         // CommonJS (Node)
-        var jQuery = require('jquery');
-        module.exports = factory(jQuery || $);
+        var Zepto = require('zepto');
+        module.exports = factory(Zepto || $);
     } else if(typeof define === 'function' && define.amd) {
         // AMD (RequireJS)
-        define(['jquery'], factory);
+        define(['zepto'], factory);
     } else {
         // globals
-        factory(jQuery || $);
+        factory(Zepto || $);
     }
 }(function($) {
     $.now = function () {
