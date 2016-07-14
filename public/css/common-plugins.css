@@ -667,6 +667,7 @@ li {
   width: 100%;
   height: 100%;
   background: transparent;
+  overflow-y: auto;
 }
 .hp-label-box .hp-label {
   box-sizing: border-box;

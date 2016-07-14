@@ -892,8 +892,21 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     var options = {};
 
     //获取个性标签数据
-    function getValues(url) {
-        return ["标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100), "标签"+Math.round(Math.random()*100),"标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000), "标签"+Math.round(Math.random()*1000)];
+    function getValues(id) {
+        var data = options[id].data;
+        var pageSize = options[id].pageSize;
+        var pageNumber = options[id].pageNumber;
+
+        if(pageSize*(pageNumber - 1) >= data.length){
+            pageNumber = options[id].pageNumber = 1;
+        }
+
+        var returnArr = [];
+        for(var i=pageSize*(pageNumber-1); i < pageSize*pageNumber && i< data.length; i++){
+            returnArr.push(data[i]);
+        }
+
+        return returnArr;
     }
     //计算当前已选数目
     function getChooseNumber(id) {
@@ -903,6 +916,17 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         }
         return 0;
     }
+    //计算当前选择的label项
+    function getCheckedLabel(id) {
+        var $lis = $('#'+id).find('.checked-label-list li');
+        var arr = [];
+        if($lis.length > 0){
+            $lis.each(function () {
+                arr.push(this.dataset.text);
+            });
+        }
+        return arr;
+    }
     //关闭
     function close(id) {
         var $box = $('#'+id);
@@ -910,22 +934,35 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         $.unlockScreen();
     }
     //换一换
-    function changeLabel(url, id) {
+    function changeLabel(data, id) {
         var $box = $('#'+id);
-        var values = getValues(url) || [];
+        options[id].pageNumber ++;
+        var values = getValues(id) || [];
         var arr = [];
         var $list = $box.find('.label-list');
+        var $checkedList = $box.find('.checked-label-list');
         if(values.length > 0){
             $.each(values, function () {
-                arr.push('<li>'+this+'</li>');
+                var cls = ~getCheckedLabel(id).indexOf(this[options[id]["value"]])?'checked':'';
+                arr.push('<li class="'+cls+'" data-value-id="'+this[options[id]["key"]]+'">'+this[options[id]["value"]]+'</li>');
             });
             $list.html(arr.join(''));
         }
         $list.find('li').on('click', function () {
-            if(getChooseNumber(id) >= options[id].maxChoose){
-                options[id].showMessageFunc('最多只能选择'+options[id].maxChoose+'个');
+            if($(this).hasClass('checked')){
+                var text = $(this).text();
+                $checkedList.find('li').each(function () {
+                    if($(this).attr('data-text') == text){
+                        $(this).remove();
+                    }
+                });
+                $(this).removeClass('checked');
             }else{
-                labelClickHandle.call(this, id);
+                if(getChooseNumber(id) >= options[id].maxChoose){
+                    options[id].showMessageFunc('最多只能选择'+options[id].maxChoose+'个');
+                }else{
+                    labelClickHandle.call(this, id);
+                }
             }
         })
     }
@@ -935,7 +972,10 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var $checkedList = $box.find('.checked-label-list');
         var list = [];
         $checkedList.find('li').each(function () {
-            list.push($(this).attr('data-text'))
+            list.push({
+                id: $(this).attr('data-value-id'),
+                text: $(this).attr('data-text')
+            });
         });
         if(required && list.length === 0){
             options[id].showMessageFunc('至少选择一个标签');
@@ -968,7 +1008,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //显示
     function showLabelBox(id){
-        var defaultValues = getValues(options[id].url);
+        options[id].pageNumber = 1;
+        var defaultValues = getValues(id);
 
         var arr = [];
         arr.push('<div class="hp-label-box animated zoomIn" id="'+id+'">');
@@ -988,7 +1029,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('              <div class="hlb-bottom">');
         arr.push('                  <ul class="label-list">');
         $.each(defaultValues, function () {
-            arr.push('                  <li>'+this+'</li>');
+            var cls = ~getCheckedLabel(id).indexOf(this[options[id]["value"]])?'checked':'';
+            arr.push('                  <li class="'+cls+'" data-value-id="'+this[options[id]["key"]]+'">'+this[options[id]["value"]]+'</li>');
         });
         arr.push('                  </ul>');
         arr.push('              </div>');
@@ -1007,7 +1049,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var $checkedList = $box.find('.checked-label-list');
         //change btn
         $box.find('.btn-change').on('click', function () {
-            changeLabel.call(null,options[id].url, id)
+            changeLabel.call(null,options[id].data, id)
         });
         //confirm btn
         $box.find('.btn-confirm').on('click', function () {
@@ -1059,12 +1101,23 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             required:true, //是否必选
             title: '个性标签',
             subtitle:'选择您的标签',
+            pageSize:10,  //每次显示标签个数
             maxChoose: 3,  //最多选择标签数
             parentDom:'body',
-            url:'',
+            key:'attr_value_id',
+            value:'title',
+            data:[],
             callback:function () {}
         },opt || {});
         var self = this;
+
+
+        var data = options[opt.id]['data'];
+        if(typeof data == 'string'){
+            $.getJSON(data, function (res) {
+                options[opt.id]['data'] = res;
+            });
+        }
 
         $(this).off('click').on('click',function () {
             var curId = $(this).attr('data-id');
