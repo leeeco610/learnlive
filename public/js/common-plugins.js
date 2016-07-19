@@ -916,7 +916,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         }
         return 0;
     }
-    //计算当前选择的label项
+    //计算当前选择的label项value
     function getCheckedLabel(id) {
         var $lis = $('#'+id).find('.checked-label-list li');
         var arr = [];
@@ -926,6 +926,24 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             });
         }
         return arr;
+    }
+    //计算当前默认值项中value
+    function getDefaultCheckedValue(id) {
+        var dv = options[id].defaultCheckedValues;
+        var arr = [];
+        $.each(dv,function () {
+            arr.push(this[options[id]["value"]]);
+        });
+        return arr;
+    }
+    //当前选中label数量大于0时,改变按钮颜色
+    function changeBtnColor(id) {
+        var $btn = $('#'+id).find('.btn-confirm');
+        if(getCheckedLabel(id) == 0){
+            $btn.removeClass('hasChecked');
+        }else{
+            $btn.addClass('hasChecked');
+        }
     }
     //关闭
     function close(id) {
@@ -1022,14 +1040,14 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('              <div class="hlb-top">');
         arr.push('                  <ul class="checked-label-list">');
         $.each(options[id].defaultCheckedValues, function () {
-            arr.push('                  <li class="checked" data-text="'+this+'">'+this+'<a class="remove">&times;</a></li>');
+            arr.push('                  <li class="checked" data-value-id="'+this[options[id]["key"]]+'" data-text="'+this[options[id]["value"]]+'">'+this[options[id]["value"]]+'<a class="remove">&times;</a></li>');
         });
         arr.push('                  </ul>');
         arr.push('              </div>');
         arr.push('              <div class="hlb-bottom">');
         arr.push('                  <ul class="label-list">');
         $.each(defaultValues, function () {
-            var cls = ~getCheckedLabel(id).indexOf(this[options[id]["value"]])?'checked':'';
+            var cls = (~getCheckedLabel(id).indexOf(this[options[id]["value"]]) || ~getDefaultCheckedValue(id).indexOf(this[options[id]["value"]]))?'checked':'';
             arr.push('                  <li class="'+cls+'" data-value-id="'+this[options[id]["key"]]+'">'+this[options[id]["value"]]+'</li>');
         });
         arr.push('                  </ul>');
@@ -1043,6 +1061,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('</div>');
 
         $(options[id].parentDom).prepend(arr.join(''));
+        
+        //按钮颜色
+        changeBtnColor(id);
 
         var $box = $('#'+id);
         var $list = $box.find('.label-list');
@@ -1072,6 +1093,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
                     labelClickHandle.call(this,id);
                 }
             }
+            changeBtnColor(id);
         });
         //checked label remove btn click
         var clickH = function () {
@@ -1083,6 +1105,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             }
             //remove
             $li.remove();
+            
+            changeBtnColor(id);
         };
         $checkedList.find('li .remove').off('click').on('click', clickH);
     }

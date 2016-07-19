@@ -571,7 +571,7 @@ ul,li{
     box-sizing: border-box;
     width: 96%;
     margin-left: 2%;
-    margin-top: 100px;
+    margin-top: 10%;
     background: #fff;
     border-radius: 10px;
     padding: 10px 0;
@@ -602,7 +602,7 @@ ul,li{
           border-radius: 13px;
           border:1px solid #ccc;
           font-size: 12px;
-          padding: 8px 20px;
+          padding: 4px 10px;
           margin-top: 16px;
           color: #ccc;
           cursor: pointer;
@@ -666,9 +666,12 @@ ul,li{
     margin: 32px auto 0;
     width: 44px;
     height: 44px;
-    background: #fff;
+    background: rgba(255,255,255,.5);
     border-radius: 50%;
     cursor: pointer;
+    &.hasChecked{
+      background: #fff;
+    }
     &:after{
       position: absolute;
       content: '';
