@@ -6,13 +6,18 @@
 
 var app = require('../app');
 var debug = require('debug')('learnlive:server');
+var fs = require('fs');
 var http = require('http');
+var https = require('https');
+var privateKey  = fs.readFileSync('./certs/private.pem', 'utf8');
+var certificate = fs.readFileSync('./certs/file.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
 /**
@@ -20,12 +25,15 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+var sslPort = '8081';
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
+httpsServer.listen(sslPort);
 server.on('error', onError);
 server.on('listening', onListening);
 
