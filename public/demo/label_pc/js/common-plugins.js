@@ -953,6 +953,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var $box = $('#'+id);
         $box.length > 0 && $box.removeClass("zoomIn").addClass("zoomOut");
         $.unlockScreen();
+        setTimeout(function () {
+            $box.length > 0 && $box.parent().remove();
+        }, 600);
     }
     //换一换
     function changeLabel(data, id) {
@@ -1017,13 +1020,15 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
 
         var clickH = function () {
             var $li = $(this).closest('li');
-            var index = $li.attr('data-index');
-            var $labelLi = $list.find('li').eq(index);
+            var vi = $li.attr('data-value-id');
+            var $labelLi = $list.find('li[data-value-id="'+vi+'"]');
             if($labelLi.length != 0 && $labelLi.text() == $li.attr('data-text')){
                 $labelLi.removeClass('checked');
             }
             //remove
             $li.remove();
+
+            changeBtnColor(id);
         };
         $checkedList.find('li .remove').off('click').on('click', clickH);
     }
@@ -1033,6 +1038,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var defaultValues = getValues(id);
 
         var arr = [];
+        arr.push('<div class="hp-label-wrapper">');
         arr.push('<div class="hp-label-box animated zoomIn" id="'+id+'">');
         arr.push('      <div class="hp-label">');
         arr.push('          <div class="hp-label-header">');
@@ -1041,7 +1047,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('          </div>');
         arr.push('          <div class="hp-label-body">');
         arr.push('              <div class="hlb-top">');
-        arr.push('                  <ul class="checked-label-list">');
+        arr.push('                  <ul class="checked-label-list'+(!options[id].showChecked?' hidden':'')+'">');
         $.each(options[id].defaultCheckedValues, function () {
             arr.push('                  <li class="checked" data-value-id="'+this[options[id]["key"]]+'" data-text="'+this[options[id]["value"]]+'">'+this[options[id]["value"]]+'<a class="remove">&times;</a></li>');
         });
@@ -1056,11 +1062,12 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         arr.push('                  </ul>');
         arr.push('              </div>');
         arr.push('          </div>');
-        arr.push('          <div class="hp-label-footer">');
+        arr.push('          <div class="hp-label-footer'+(!options[id].showChangeBtn?' hidden':'')+'">');
         arr.push('              <a class="btn-change">换一换</a>');
         arr.push('          </div>');
         arr.push('      </div>');
         arr.push('<a class="btn-confirm"></a>');
+        arr.push('</div>');
         arr.push('</div>');
 
         $(options[id].parentDom).prepend(arr.join(''));
@@ -1101,8 +1108,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         //checked label remove btn click
         var clickH = function () {
             var $li = $(this).closest('li');
-            var index = $li.attr('data-index');
-            var $labelLi = $list.find('li').eq(index);
+            var vi = $li.attr('data-value-id');
+            var $labelLi = $list.find('li[data-value-id="'+vi+'"]');
             if($labelLi.length != 0 && $labelLi.text() == $li.attr('data-text')){
                 $labelLi.removeClass('checked');
             }
@@ -1112,6 +1119,28 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             changeBtnColor(id);
         };
         $checkedList.find('li .remove').off('click').on('click', clickH);
+
+        //keydown 按键事件
+        $(document).on('keydown', function (e) {
+            if(e.keyCode == 13){
+                var $box = $('#'+id);
+                var $checkedList = $box.find('.checked-label-list');
+                var list = [];
+                $checkedList.find('li').each(function () {
+                    list.push({
+                        id: $(this).attr('data-value-id'),
+                        text: $(this).attr('data-text')
+                    });
+                });
+                if(options[id].required && list.length === 0){
+                    options[id].showMessageFunc('至少选择一个标签');
+                    return false;
+                }
+                options[id].callback(list);
+                close(id);
+                return false;
+            }
+        });
     }
     function label(opt) {
         if(typeof opt.id != "string"){
@@ -1125,6 +1154,8 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             },
             id:'hpLabelBox',
             defaultCheckedValues:[],
+            showChangeBtn: false, //是否显示 换一换  按钮
+            showChecked: true,  //是否在上方显示选中标签
             required:true, //是否必选
             title: '个性标签',
             subtitle:'选择您的标签',
