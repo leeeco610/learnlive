@@ -30,5 +30,9 @@
   {
     "name":"个性标签",
     "url":"http://www.learnlive.cn/public/demo/label_mobile/index.html"
+  },
+  {
+    "name":"个性标签__PC",
+    "url":"http://www.learnlive.cn/public/demo/label_pc/index.html"
   }
 ]
