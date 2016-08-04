@@ -725,7 +725,7 @@ li {
   color: #009DF5;
   width: 16px;
   height: 16px;
-  font-size: .6rem;
+  font-size: 12px;
   line-height: 16px;
   text-align: center;
   cursor: pointer;
@@ -1308,11 +1308,10 @@ html.with-statusbar-overlay .popup.tablet-fullscreen {
 }
 .toast {
   background: rgba(0, 0, 0, 0.8);
-  border-radius: 1rem;
+  border-radius: 40px;
   color: white;
-  padding: 0 .8rem;
-  height: 2rem;
-  line-height: 2rem;
-  font-size: 0.8rem;
+  padding: 0 25px;
+  line-height: 40px;
+  font-size: 16px;
   width: auto;
 }
