@@ -1314,4 +1314,6 @@ html.with-statusbar-overlay .popup.tablet-fullscreen {
   line-height: 40px;
   font-size: 16px;
   width: auto;
+  bottom: auto;
+  right: auto;
 }
