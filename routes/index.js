@@ -15,6 +15,11 @@ router.get('/login.html',function(req,res,next){
   res.render('login');
 });
 
+//copy code
+router.get('/copy.html', function(req, res, next) {
+  res.redirect(301, '/copy');
+});
+
 //tools page
 router.get('/tools.html',function(req,res,next){
   res.render('tools');

@@ -16,6 +16,7 @@ var user = require('./routes/user');
 var article = require('./routes/article');
 var mall = require('./routes/mall');
 var tools = require('./routes/tools');
+var copy = require('./routes/copy');
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/user', user);
 app.use('/article',article);
 app.use('/mall',mall);
 app.use('/tools',tools);
+app.use('/copy', copy);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

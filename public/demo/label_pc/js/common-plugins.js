@@ -885,7 +885,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     $(document).on('keydown','input[data-width="auto"]',keydownHandle);
     $(document).on('keyup','input[data-width="auto"]',keyupHandle);
 }($);
-/*======================================================
+/**======================================================
  ************   Modals   ************
  ======================================================*/
 +function ($) {
@@ -1202,9 +1202,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         $.openModal(modal);
         return modal[0];
     };
-    //显示一个消息，会在2秒钟后自动消失
+    //显示一个消息，会在3秒钟后自动消失
     $.showMsg = function(msg, duration, extraclass) {
-        var $toast = $('<div class="modal toast ' + (extraclass || '') + '">' + msg + '</div>').appendTo(document.body);
+        var $toast = $('<div class="ui-modal toast ' + (extraclass || '') + '">' + msg + '</div>').appendTo(document.body);
         $.openModal($toast, function(){
             setTimeout(function() {
                 $.closeModal($toast);
@@ -1213,9 +1213,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     };
     $.openModal = function (modal, cb) {
         modal = $(modal);
-        var isModal = modal.hasClass('modal'),
+        var isModal = modal.hasClass('ui-modal'),
             isNotToast = !modal.hasClass('toast');
-        if ($('.modal.modal-in:not(.modal-out)').length && defaults.modalStack && isModal && isNotToast) {
+        if ($('.ui-modal.modal-in:not(.modal-out)').length && defaults.modalStack && isModal && isNotToast) {
             $.modalStack.push(function () {
                 $.openModal(modal, cb);
             });

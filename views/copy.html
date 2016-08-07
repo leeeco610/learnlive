@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>复制</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style type="text/css">
+        html, body{margin: 0;padding: 0;}
+        #copy{
+            margin: 10px auto 0;
+            width: 800px;
+            height: 600px;
+            border:1px solid #0e931c;
+            padding: 10px;
+        }
+        p{color:#0e931c; margin:50px auto 0;width: 800px;}
+    </style>
+</head>
+<body>
+    <p>点击框内进行编辑, 点击框外保存</p>
+    <div id="copy"><%= content %></div>
+
+    <script type="text/javascript" src="/public/libs/jquery-1.11.1.min.js"></script>
+    <script>
+        $('#copy')
+                .on('click', function () {
+                    $(this).attr('contenteditable', true).focus();
+                })
+                .on('blur',function () {
+                    $(this).removeAttr('contenteditable');
+                    var content = $(this).text();
+                    $.post('/copy/save', {content: content}, function (res) {},'json');
+                });
+    </script>
+</body>
+</html>
