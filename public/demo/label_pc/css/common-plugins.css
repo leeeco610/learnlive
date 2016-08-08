@@ -11,6 +11,7 @@ li {
 a {
   outline: none !important;
   -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 html,
 body,
@@ -781,8 +782,8 @@ li {
   content: '';
   width: 18px;
   height: 10px;
-  top: 11px;
-  left: 12px;
+  top: 15px;
+  left: 13px;
   border-left: 3px solid #666;
   border-bottom: 3px solid #666;
   transform: rotate(-45deg);

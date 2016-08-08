@@ -1446,6 +1446,9 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var $box = $('#'+id);
         $box.length > 0 && $box.removeClass("zoomIn").addClass("zoomOut");
         $.unlockScreen();
+        var timer = setTimeout(function () {
+            $box.parent().remove();
+        }, 1111);
     }
     //换一换
     function changeLabel(data, id) {
@@ -1486,10 +1489,10 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         var $checkedList = $box.find('.checked-label-list');
         var list = [];
         $checkedList.find('li').each(function () {
-            list.push({
-                id: $(this).attr('data-value-id'),
-                text: $(this).attr('data-text')
-            });
+            var obj = {};
+            obj[options[id]["key"]] = $(this).attr('data-value-id');
+            obj[options[id]["value"]] = $(this).attr('data-text');
+            list.push(obj);
         });
         if(required && list.length === 0){
             options[id].showMessageFunc('至少选择一个标签');
@@ -1497,6 +1500,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         }
         //回调
         cb(list);
+        $(this).data('list',list);
         //关闭
         close(id);
     }
@@ -1524,6 +1528,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
     }
     //显示
     function showLabelBox(id){
+        var self = this;
         options[id].pageNumber = 1;
         var defaultValues = getValues(id);
 
@@ -1574,7 +1579,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         });
         //confirm btn
         $box.find('.btn-confirm').on('click', function () {
-            confirmHandle.call(null, id,options[id].required, options[id].callback);
+            confirmHandle.call(self, id,options[id].required, options[id].callback);
         });
         //label click
         $box.find('.label-list li').on('click', function () {
@@ -1659,7 +1664,6 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         },opt || {});
         var self = this;
 
-
         var data = options[opt.id]['data'];
         if(typeof data == 'string'){
             $.getJSON(data, function (res) {
@@ -1668,6 +1672,10 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
         }
 
         $(this).off('click').on('click',function () {
+            var list = $(this).data('list');
+            if(list && list.length > 0){
+                options[opt.id]['defaultCheckedValues'] = list;
+            }
             var curId = $(this).attr('data-id');
             var $box = $('#'+curId);
             $.lockScreen();
@@ -1681,3 +1689,195 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
 
     $.fn.label = label;
 }();
+
+
+$.fn.initial_fileinputinit= function(options){
+    var self = this;
+    var uploaded_callback = options["uploaded_callback"] || function(){};
+    var upload_status={status:"start"}
+    var upload_all_complete = options["upload_all_complete"] || function(){};
+    var upload_token_url = options['uptoken_url'];
+    var upload_concurrent_max_files = options['concurrent_max_files'] || 100;
+    var upload_concurrent_message=options['concurrent_message'] || "同时上传的图片不能超过"+upload_concurrent_max_files+"张";
+    var wrapper_max_files=options['wrapper_max_files'] || 100;
+    var upload_wrapper_message=options['wrapper_message'] || "上传的图片不能超过"+wrapper_max_files+"张";
+    var wrapper_file_selector = options['wrapper_file_selector'] || '';
+    var check_container_files = options['check_container_files'] || function(){};
+    var system_option = {
+        runtimes: 'html5,flash,html4',    		//上传模式,依次退化
+        browse_button: $(self).attr("id"),       //上传选择的点选按钮，**必需**
+        // uptoken_url: '<{link ctl="test:getUpToken"}>',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
+        //uptoken : Home.ajaxRequest(options['upmaxtoken_url'],{},false), //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
+        // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
+        //save_key: true,   // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK会忽略对key的处理
+        domain: 'http://7xog72.com2.z0.glb.qiniucdn.com/',   //bucket 域名，下载资源时用到，**必需**
+        container: $(self).parent().attr("id"),           //上传区域DOM ID，默认是browser_button的父元素，
+        max_retries: 3,                   //上传失败最大重试次数
+        dragdrop: true,                   //开启可拖曳上传
+        drop_element: 'container',        //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+        chunk_size: '4mb',                //分块上传时，每片的体积
+        auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
+        //resize: {
+        // width: 320,
+        // height: 320,
+        // crop: true,
+        // enabled:true,
+        // quality: 60,
+        // preserve_headers: false
+        // },
+        filters: options['filters'] || {
+            mime_types : [ //只允许上传图片和zip文件
+                { title : "Image files", extensions : "jpg,gif,png,tif,bmp,jpeg"},
+            ],
+            max_file_size: '20mb',      //最大文件体积限制
+            //prevent_duplicates : true //不允许选取重复文件
+        },
+        init: {
+            'FilesAdded': function(up, files) {
+                var clearUpFiles = function(strFinish_Message){
+                    delUploadProgress(self);
+                    up.stop();
+                    //upload_concurrent_message
+                    Home.loadedmessage({"finish_message":strFinish_Message,
+                        "type":"result-warning",
+                        "icon-class":"icon-exclamation-sign"});
+                    //up.splice(0,-1);
+                    plupload.each(files, function(file) {
+                        up.removeFile(file);
+                    });
+                }
+                //console.log(files.length);
+                //console.log(upload_max_files);
+                if(files.length>upload_concurrent_max_files)
+                {
+                    clearUpFiles(upload_concurrent_message);
+                }
+                else{
+                    check_container_files(files,clearUpFiles);
+                }
+                //else if($(self).parents(".other-photo-edit").find(".space-photo").length>=wrapper_max_files ||
+                //	$(self).parents(".other-photo-edit").find(".space-photo").length+files.length>wrapper_max_files) {
+
+
+                //delUploadProgress(self);
+                //up.stop();
+                //Home.loadedmessage({
+                //	"finish_message": upload_wrapper_message,
+                //	"type": "result-warning", "icon-class": "icon-exclamation-sign"
+                //});
+                //
+                //plupload.each(files, function (file) {
+                //	up.removeFile(file);
+                //});
+                //}
+                //}
+                //plupload.each(files, function(file) {
+                //	//文件添加进队列后,处理相关的事情
+                //	//console.log($(self).parent().find(".progress"));
+                //	//console.log($(self).parent().find(".progress").length<=0);
+                //	if($(self).parents(".other-photo-edit").find(".space-photo").length>=wrapper_max_files){
+                //		up.stop();
+                //		Home.loadedmessage({"finish_message":"上传的空间图片不能超过三张"});
+                //		delUploadProgress(self);
+                //	}else
+                //	{
+                //		if($(self).parent().find(".progress").length<=0)
+                //			generalUploadProgress(self);
+                //	}
+                //});
+            },
+            'FileFiltered': function(up, file) {
+                //if($(self).parents(".other-photo-edit").find(".space-photo").length>=wrapper_max_files){
+                //	up.stop();
+                //	Home.loadedmessage({"finish_message":"上传的空间图片不能超过三张"});
+                //	//delUploadProgress(self);
+                //	up.removeFile(file);
+                //}
+                //if(up.files.length>upload_concurrent_max_files)
+                //{
+                //	delUploadProgress(self);
+                //	up.stop();
+                //	Home.loadedmessage({"finish_message":"同时上传的空间图片不能超过三张"});
+                //}
+                //console.log($(self).parents(".other-photo-edit").find(".space-photo").length);
+                //if($(self).parents(".other-photo-edit").find(".space-photo").length>=wrapper_max_files){
+                //	up.stop();
+                //	Home.loadedmessage({"finish_message":"上传的空间图片不能超过三张"});
+                //}
+            },
+            'BeforeUpload': function(up, file) {
+                //if(up.files.length>upload_concurrent_max_files)
+                //{
+                //	delUploadProgress(self);
+                //	up.stop();
+                //	Home.loadedmessage({"finish_message":"同时上传的空间图片不能超过三张"});
+                //}
+                if(up.settings.runtimes=="html4"){
+                }
+                // 每个文件上传前,处理相关的事情
+            },
+            'UploadProgress': function(up, file) {
+                if(file.percent>0){
+                    if($(self).parent().find(".progress").length<=0)
+                        generalUploadProgress(self);
+                    setUploadProgress(self,file.percent,file.name);
+                }
+                // 每个文件上传时,处理相关的事情
+            },
+            'FileUploaded': function(up, file, info) {
+                // 每个文件上传成功后,处理相关的事情
+                // 其中 info 是文件上传成功后，服务端返回的json，形式如
+                // {
+                //    "hash": "Fh8xVqod2MQ1mocfI4S4KpRL6D98",
+                //    "key": "gogopher.jpg"
+                //  }
+                // 参考http://developer.qiniu.com/docs/v6/api/overview/up/response/simple-response.html
+                var domain = up.getOption('domain');
+                var res = $.parseJSON(info);
+                var sourceLink = domain + res.key;
+                //console.log($.extend(file,res,{"status":upload_status.status}));
+                uploaded_callback($.extend(file,res,{"status":upload_status.status}));
+            },
+            'Error': function(up, err, errTip) {
+                Home.loadedmessage({"finish_message":"图片大小不能超过20MB，请压缩后重新上传","type":"result-warning",
+                    "icon-class":"icon-exclamation-sign"});
+                //上传出错时,处理相关的事情
+            },
+            'UploadComplete': function(up,file) {
+                //队列文件处理完毕后,处理相关的事情
+                delUploadProgress(self);
+                upload_status.status='finish';
+                upload_all_complete($.extend(file,{"status":upload_status.status}));
+            },
+            'Key': function(up, file) {
+                // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                //var strdate = new Date().toLocaleDateString().split("/").join('');
+                var strdate = new Date().getFullYear()+"/"+(new Date().getMonth()*1+1)+"/"+new Date().getDate();
+                var microtime  = new Date().getTime();
+                var key = strdate+"_"+microtime+$.md5(microtime+file.id+file.name);
+                // do something with key here
+                return key
+            }
+        }
+    };
+    var uploader = Qiniu.uploader($.extend(system_option,options));
+    //generalUploadProgress(self);
+    function generalUploadProgress(self){
+        var progresshtml ='	<div class="progress file-upload"><div class="progress-bar" role="progressbar" ' +
+            ' aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width:0%"></div><div class="up-pro-val">0%</div></div>';
+        $(progresshtml).insertBefore($(self));
+        var pro = $(self).parent().find(".progress");
+        pro.css("line-height",pro.height()+"px");
+        //return progresshtml;
+    }
+
+    function setUploadProgress(self,current_width,current_name){
+        $(self).parent().find(".progress .progress-bar").css("width",current_width+"%");
+        $(self).parent().find(".up-pro-val").text(current_width+"%"+"."+current_name);
+    }
+
+    function delUploadProgress(self){
+        $(self).parent().find(".progress").remove();
+    }
+}
