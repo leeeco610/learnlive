@@ -20,6 +20,13 @@
                 var $city = $parent.find('.city-list');
                 $city.length > 0 && $city.remove();
                 $parent.removeClass('active');
+
+                $(document).off('click', docClickHandle);
+            };
+            //点击插件以外的地方关闭插件
+            var docClickHandle = function (e) {
+                var target = e.target;
+                !$(target).hasClass('province-city')?$(target).closest('.province-list').length === 0 && close():'';
             };
             if($province.length > 0){
                 if($province.is(':hidden')){
@@ -38,16 +45,18 @@
                 arr_pro.push('</div>');
                 $parent.append(arr_pro.join(''));
             }
+            //点击插件以外关闭插件
+            $(document).on('click', docClickHandle);
 
             //event
             var getCitys = function (pro) {
-                  var arr = [];
-                  $.each($.cityData,function () {
-                      if(this.name === pro){
-                          arr = this.sub;
-                      }
-                  });
-                  return arr;
+                var arr = [];
+                $.each($.cityData,function () {
+                    if(this.name === pro){
+                        arr = this.sub;
+                    }
+                });
+                return arr;
             };
             function clickHandle_pro(){
                 var $city = $parent.find('.city-list');
@@ -64,13 +73,13 @@
                 arr_city.push(' </ul>')
                 arr_city.push('</div>');
                 $parent.append(arr_city.join(''));
-                
+
                 //click handle
                 $parent.on('click','.city-list li',function () {
                     var city = $(this).text();
                     $(self).val(pro+" — "+city);
                     close();
-                })
+                });
             }
             $parent.find('.province-list li').on('click',clickHandle_pro);
 
