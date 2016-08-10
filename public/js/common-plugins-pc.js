@@ -217,6 +217,7 @@ $.simpleDialogClose = function () {
     $.unlockScreen();
     var $dialog = $(".simple-dialog");
     $dialog.find(".simple-dialog-outer").removeClass("zoomIn").addClass("zoomOut");
+    $('body').css({overflow: 'auto'});
     setTimeout(function(){
         $dialog.remove();
     },600);
@@ -287,7 +288,7 @@ $.simpleDialog = function (args) {
     htmlArr.push('  </div>');
     htmlArr.push('</div>');
     htmlArr.push('</div>');
-    $("body").prepend(htmlArr.join(''));
+    $("body").prepend(htmlArr.join('')).css({overflow: 'hidden'});
     var $dialog = $("#"+id);
 
     $dialog.focus();
