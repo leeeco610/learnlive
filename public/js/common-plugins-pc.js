@@ -746,7 +746,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
                             $(options.showPic).attr('src',img);
                             options.callback();
                             $.simpleDialogClose();
-                            var elID = el.id;
+                            var elID = $(el).attr('id');
                             $(el).replaceWith('<input id="'+elID+'" type="file">');
                             $('#'+elID).imageCropDialog(options);
                             return false;
