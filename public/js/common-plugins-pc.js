@@ -1685,6 +1685,7 @@ $.imgUpload = function(btnID,type,maxSize,showImg,fn){
             }else {
                 showLabelBox.call(self, curId)
             }
+            return false;
         });
     }
 
